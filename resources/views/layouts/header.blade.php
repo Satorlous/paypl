@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-</head>
-<body>
+@section('header')
+    <header>
+        <p>Текст хедера</p>
+    </header>
+@endsection
