@@ -1,7 +1,7 @@
 @extends('layouts.payplMain')
 @extends('layouts.header')
 @section('content')
-    <div>
+    <div>git
         <p>Контент</p>
     </div>
     @endsection

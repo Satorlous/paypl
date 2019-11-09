@@ -1,5 +1,7 @@
 @section('header')
     <header>
-        <p>Текст хедера</p>
+        <nav class="navbar fixed-top">
+
+        </nav>
     </header>
 @endsection
