@@ -1,11 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap&subset=cyrillic');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap&subset=cyrillic');
 
 @font-face {
     font-family: 'Comfortaa', cursive;
 }
 
+@font-face {
+    font-family: 'Roboto', cursive;
+}
+
 body {
-    font-family: Comfortaa, serif;
+    font-family: 'Roboto';
+    background-image: url("../images/bg.png");
+    overflow-x: hidden;
 }
 
 .navbar {
@@ -29,6 +36,11 @@ body {
 .nav-link:hover {
     background: #f4f4f4;
     color: #f97300;
+    border-radius: 5px;
+    -webkit-transition: opacity 2.0s ease-in;
+    -moz-transition: opacity 2.0s ease-in;
+    -o-transition: opacity 2.0s ease-in;
+    opacity: 1;
 }
 
 .navbar-collapse {
@@ -43,9 +55,17 @@ body {
     justify-content: flex-end;
 }
 
+.navbar-brand .logo{
+    height: 30px;
+}
+
 .bg-dark{
     background-color:#343a40!important
 }
 .bg-primary{
     background-color:#007bff!important
+}
+
+.jumbotron{
+    background: none;
 }

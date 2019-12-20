@@ -17,6 +17,8 @@ class CreateMediaTable extends Migration
             $table->integerIncrements('id');
             $table->unsignedInteger('good_id');
             $table->string('link');
+            $table->string('type');
+            $table->text('description');
 
             $table->foreign('good_id')->references('id')->on('goods');
         });

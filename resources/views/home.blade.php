@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.payplMain')
 
 @section('content')
 <div class="container">
@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    Вход успешен!
                 </div>
             </div>
         </div>

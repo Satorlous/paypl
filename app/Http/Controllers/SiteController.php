@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {
-    public function Index(){
-
+    public function index()
+    {
+        return view('index');
     }
 }
