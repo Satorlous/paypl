@@ -1,10 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap&subset=cyrillic');
+
+@font-face {
+    font-family: 'Comfortaa', cursive;
+}
+
+body {
+    font-family: Comfortaa, serif;
+}
+
 .navbar {
-    background-color: #F97300;
+    background: linear-gradient(to bottom, rgba(50,88,201,1) 0%,rgba(51,82,159,1) 100%);
 }
 
 .nav-link, .navbar-brand {
     color: #f4f4f4;
     cursor: pointer;
+}
+
+.navbar-brand:hover {
+    text-decoration: none;
+    color: inherit;
 }
 
 .nav-link {
