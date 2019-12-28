@@ -17,3 +17,26 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', 'SiteController@index')->name('index');
+
+Route::get('/home',function () {
+    return redirect('/');
+});
+
+Route::get('/profile','ProfileController@profile')->name('profile');
+Route::get('/profile/statistics','ProfileController@profileStatistics');
+Route::get('/profile/pay-services','ServicesController@payServices');
+Route::get('/profile/contact-services','ServicesController@contactServices');
+
+Route::get('/profile/goods','GoodsController@goodsUser');
+Route::get('/profile/orders','GoodsController@ordersUser');
+
+Route::get('/category/{id}','ServicesController@category');
+Route::get('/category/{idC}/subcategory/{id}','ServicesController@subcategory');
+Route::get('/category/{idC}/subcategory/{idSC}/goods/{id}','GoodsController@goodsDetail');
+
+/**
+ * Только для админов
+ */
+Route::get('/statuses','ServicesController@statuses');
+Route::get('/roles','ServicesController@roles');
+
