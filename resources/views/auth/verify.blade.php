@@ -1,4 +1,4 @@
-@extends('layouts.payplMain')
+@extends('layouts.main')
 
 @section('content')
 <div class="container">
