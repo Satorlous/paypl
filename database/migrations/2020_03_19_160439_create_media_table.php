@@ -17,10 +17,11 @@ class CreateMediaTable extends Migration
             $table->integerIncrements('id');
             $table->unsignedInteger('good_id');
             $table->string('link');
-            $table->string('type');
-            $table->text('description');
+            $table->integer('media_type_id');
+            $table->text('description')->nullable();
 
             $table->foreign('good_id')->references('id')->on('goods');
+            $table->foreign('media_type_id')->references('id')->on('media_types');
         });
     }
 

@@ -18,6 +18,7 @@ class CreateContactServiceUserTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('contact_service_id');
             $table->string('link');
+
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('contact_service_id')->references('id')->on('contact_services');
         });
