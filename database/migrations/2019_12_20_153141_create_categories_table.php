@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->integerIncrements('id');
             $table->string('name');
             $table->double('tax');
-            $table->unsignedInteger('parent_id');
+            $table->unsignedInteger('parent_id')->nullable();
 
             $table->foreign('parent_id')->references('id')->on('categories');
         });

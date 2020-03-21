@@ -16,7 +16,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'login'
+        'name', 'email', 'password', 'login',
+        //ToDo: расскомментировать как доделаем модели
+        /*
+        'avatar', 'role_id'
+        */
     ];
 
     /**
@@ -36,4 +40,43 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static $validate = [
+        'name'       => ['required', 'string', 'max:255'],
+        'email'      => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password'   => ['required', 'string', 'min:8', 'confirmed'],
+        'login'      => ['required', 'string', 'max:255'],
+    ];
+
+    /**
+     * @example $this->contactServices->first()->pivot->link
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function contactServices()
+    {
+        return $this->belongsToMany(ContactService::class, 'contact_service_user',
+            'user_id','id')->withPivot(['link']);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(Request::class, 'id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'id');
+    }
+
+    public function goods()
+    {
+        return $this->hasMany(Goods::class, 'id');
+    }
+
 }
