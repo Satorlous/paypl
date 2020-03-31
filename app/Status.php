@@ -18,17 +18,19 @@ class Status extends Model
         'locked'   => ['boolean']
     ];
 
-    public function Goods()
+    public $timestamps = false;
+
+    public function goods()
     {
-        return $this->hasMany('App\Goods', 'id');
+        return $this->hasMany('App\Good', 'id');
     }
 
-    public function Orders()
+    public function orders()
     {
         return $this->hasMany('App\Order', 'id');
     }
 
-    public function Requests()
+    public function requests()
     {
         return $this->hasMany('App\Request', 'id');
     }

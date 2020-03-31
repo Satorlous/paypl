@@ -9,17 +9,17 @@ class MediaType extends Model
     protected $table = 'media_types';
 
     protected $fillable = [
-        'good_id', 'link', 'description', 'type'
+        'name'
     ];
 
     public static $validate = [
-        'link'          => ['required', 'string'],
-        'description'   => ['string'],
-        'type'          => ['required', 'integer'],
+        'name' => ['required', 'string'],
     ];
+
+    public $timestamps = false;
 
     public function medias()
     {
-        return $this->hasMany(Media::class, 'id');
+        return $this->hasMany(Media::class);
     }
 }

@@ -16,6 +16,8 @@ class Role extends Model
         'name'  => ['required', 'string']
     ];
 
+    public $timestamps = false;
+
     public function users()
     {
         return $this->hasMany(User::class, 'id');

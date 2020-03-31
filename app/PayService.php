@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ContactService extends Model
+class PayService extends Model
 {
-    protected $table = 'contact_services';
+    protected $table = 'pay_services';
 
     protected $fillable = [
         'name', 'link', 'icon'
@@ -27,9 +27,9 @@ class ContactService extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'contact_service_user',
-            'contact_service_id','id')->withPivot([
-                'link'
+        return $this->belongsToMany(User::class, 'pay_service_user',
+            'pay_service_id','id')->withPivot([
+            'link'
         ]);
     }
 }

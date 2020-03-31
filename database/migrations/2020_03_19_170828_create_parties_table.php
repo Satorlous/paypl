@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePartyTable extends Migration
+class CreatePartiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePartyTable extends Migration
      */
     public function up()
     {
-        Schema::create('party', function (Blueprint $table) {
+        Schema::create('parties', function (Blueprint $table) {
             $table->integerIncrements('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('chat_id');
@@ -30,6 +30,6 @@ class CreatePartyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('party');
+        Schema::dropIfExists('parties');
     }
 }

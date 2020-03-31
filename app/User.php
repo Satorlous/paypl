@@ -16,11 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'login',
-        //ToDo: расскомментировать как доделаем модели
-        /*
-        'avatar', 'role_id'
-        */
+        'name', 'email', 'password', 'login', 'avatar', 'balance', 'role_id', 'rating'
     ];
 
     /**
@@ -59,6 +55,18 @@ class User extends Authenticatable
             'user_id','id')->withPivot(['link']);
     }
 
+    public function payServices()
+    {
+        return $this->belongsToMany(PayService::class, 'pay_service_user',
+            'user_id','id')->withPivot(['link']);
+    }
+
+    public function chats()
+    {
+        return $this->belongsToMany(Chat::class, 'parties',
+            'user_id', 'id');
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
@@ -76,7 +84,11 @@ class User extends Authenticatable
 
     public function goods()
     {
-        return $this->hasMany(Goods::class, 'id');
+        return $this->hasMany(Good::class, 'id');
     }
 
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'id');
+    }
 }

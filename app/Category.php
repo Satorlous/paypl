@@ -18,9 +18,11 @@ class Category extends Model
         'parent_id'   => ['exists:App\Category,id'],
     ];
 
+    public $timestamps = false;
+
     public function goods()
     {
-        return $this->hasMany(Goods::class, 'category_id','id');
+        return $this->hasMany(Good::class, 'category_id','id');
     }
 
     /**

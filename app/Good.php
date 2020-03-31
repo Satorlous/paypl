@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Goods extends Model
+class Good extends Model
 {
     protected $table = 'goods';
 
@@ -25,24 +25,24 @@ class Goods extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function status()
     {
-        return $this->belongsTo('App\Status', 'status_id');
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
     public function category()
     {
-        return $this->belongsTo('App\Category', 'category_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    /**
-     * @example $this->orders->first()->pivot->quantity
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
+    public function media()
+    {
+        return $this->hasMany(Media::class);
+    }
+
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'good_order',

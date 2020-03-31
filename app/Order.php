@@ -28,14 +28,9 @@ class Order extends Model
         return $this->belongsTo(Status::class, 'status_id');
     }
 
-    /**
-     * @example $this->goods->first()->pivot->quantity
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
     public function goods()
     {
-        return $this->belongsToMany(Goods::class, 'good_order',
+        return $this->belongsToMany(Good::class, 'good_order',
             'order_id', 'id')->withPivot([
             'quantity', 'price_current', 'tax_current'
         ]);
