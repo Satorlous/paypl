@@ -10,7 +10,8 @@ class Good extends Model
 
     protected $fillable = [
         'name', 'price', 'discount', 'user_id',
-        'status_id', 'description', 'category_id'
+        'status_id', 'description', 'category_id',
+        'quantity',
     ];
 
     public static $validate = [
@@ -46,7 +47,7 @@ class Good extends Model
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'good_order',
-            'good_id', 'id')->withPivot([
+            'good_id')->withPivot([
                 'quantity', 'price_current', 'tax_current'
         ]);
     }

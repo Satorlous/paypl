@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
+    const TYPE_ORDER    = 'order';
+    const TYPE_GOOD     = 'good';
+    const TYPE_REQUEST  = 'request';
+
     protected $table = 'statuses';
 
     protected $fillable = [
@@ -22,16 +26,16 @@ class Status extends Model
 
     public function goods()
     {
-        return $this->hasMany('App\Good', 'id');
+        return $this->hasMany('App\Good', 'status_id');
     }
 
     public function orders()
     {
-        return $this->hasMany('App\Order', 'id');
+        return $this->hasMany('App\Order', 'status_id');
     }
 
     public function requests()
     {
-        return $this->hasMany('App\Request', 'id');
+        return $this->hasMany('App\Request', 'status_id');
     }
 }

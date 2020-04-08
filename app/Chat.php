@@ -21,7 +21,7 @@ class Chat extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'parties',
-            'chat_id','id');
+            'chat_id');
     }
 
     public function messages()

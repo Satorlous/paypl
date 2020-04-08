@@ -52,19 +52,19 @@ class User extends Authenticatable
     public function contactServices()
     {
         return $this->belongsToMany(ContactService::class, 'contact_service_user',
-            'user_id','id')->withPivot(['link']);
+            'user_id')->withPivot(['link']);
     }
 
     public function payServices()
     {
         return $this->belongsToMany(PayService::class, 'pay_service_user',
-            'user_id','id')->withPivot(['link']);
+            'user_id')->withPivot(['link']);
     }
 
     public function chats()
     {
         return $this->belongsToMany(Chat::class, 'parties',
-            'user_id', 'id');
+            'user_id');
     }
 
     public function role()
@@ -74,21 +74,21 @@ class User extends Authenticatable
 
     public function requests()
     {
-        return $this->hasMany(Request::class, 'id');
+        return $this->hasMany(Request::class, 'user_id');
     }
 
     public function orders()
     {
-        return $this->hasMany(Order::class, 'id');
+        return $this->hasMany(Order::class, 'user_id', 'id');
     }
 
     public function goods()
     {
-        return $this->hasMany(Good::class, 'id');
+        return $this->hasMany(Good::class, 'user_id');
     }
 
     public function messages()
     {
-        return $this->hasMany(Message::class, 'id');
+        return $this->hasMany(Message::class, 'user_id');
     }
 }

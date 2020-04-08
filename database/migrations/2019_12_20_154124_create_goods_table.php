@@ -18,6 +18,7 @@ class CreateGoodsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('name');
             $table->double('price');
+            $table->unsignedInteger('quantity')->nullable();
             $table->double('discount')->nullable();
             $table->unsignedInteger('status_id');
             $table->text('description')->nullable();

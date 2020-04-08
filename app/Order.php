@@ -31,7 +31,7 @@ class Order extends Model
     public function goods()
     {
         return $this->belongsToMany(Good::class, 'good_order',
-            'order_id', 'id')->withPivot([
+            'order_id')->withPivot([
             'quantity', 'price_current', 'tax_current'
         ]);
     }

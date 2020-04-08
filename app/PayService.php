@@ -28,7 +28,7 @@ class PayService extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'pay_service_user',
-            'pay_service_id','id')->withPivot([
+            'pay_service_id')->withPivot([
             'link'
         ]);
     }

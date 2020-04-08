@@ -28,7 +28,7 @@ class ContactService extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'contact_service_user',
-            'contact_service_id','id')->withPivot([
+            'contact_service_id')->withPivot([
                 'link'
         ]);
     }
