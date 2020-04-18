@@ -16,8 +16,15 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', 'SiteController@index')->name('index');
-Route::get('/test', 'SiteController@test')->name('test');
+Route::get('/', 'SiteController@index')
+    ->name('index');
+Route::get('/test', 'SiteController@test')
+    ->name('test');
+
+Route::post('/goodsList', 'GoodsController@goodsList')
+    ->name('goodsListPost')->middleware(['checkGoodsParameters']);
+Route::get('/categoryMap', 'CategoriesController@getMap')
+    ->name('categoryMap');
 
 Route::get('/home',function () {
     return redirect('/');

@@ -5,10 +5,12 @@
 use App\Good;
 use App\Category;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 $factory->define(Good::class, function (Faker $faker, $params) {
+    $name = $faker->words(3, true);
     return [
-        'name'         => $faker->words(3, true),
+        'name'         => $name,
         'price'        => $faker->randomFloat(2, 0, 100000),
         'quantity'     => $faker->randomDigit,
         'discount'     => $faker->randomFloat(2, 0, 1),
@@ -17,6 +19,7 @@ $factory->define(Good::class, function (Faker $faker, $params) {
         'description'  => $faker->realText(),
         'created_at'   => $faker->dateTime(),
         'updated_at'   => now(),
-        'category_id'  => Category::all()->random()['id'],
+        'category_id'  => Category::all()->where('parent_id','!=','null')->random()['id'],
+        'slug'         => Str::slug($name),
     ];
 });

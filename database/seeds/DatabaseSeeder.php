@@ -17,7 +17,9 @@ class DatabaseSeeder extends Seeder
         $this->call(StatusSeeder::class);
         $count = 0;
         factory(\App\Category::class, 40)->create()->each(function ($category) {
-            $category->parent()->associate(\App\Category::all()->where('id','>', '5')->random())->save();
+            if($category->id > 7) {
+                $category->parent()->associate(\App\Category::all()->where('id','>', '5')->random())->save();
+            }
         });
         factory(\App\ContactService::class, 10)->create();
         factory(\App\User::class, 20)->create(['role_id' => 2])->each(

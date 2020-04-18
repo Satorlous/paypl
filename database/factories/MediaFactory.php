@@ -8,7 +8,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Media::class, function (Faker $faker, $params) {
     return [
-        'link' => $faker->imageUrl(),
+        'link' => 'https://www.colorbook.io/imagecreator.php?width='.$faker->randomNumber(3)
+            .'&height='.$faker->randomNumber(3),
         'media_type_id' => MediaType::where('name', '=', 'http')->firstOrFail()['id'],
         'good_id'  => $params['good_id'],
     ];
