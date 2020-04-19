@@ -18,15 +18,16 @@ class CreateGoodsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('name');
             $table->double('price');
+            $table->unsignedInteger('quantity')->nullable();
             $table->double('discount')->nullable();
             $table->unsignedInteger('status_id');
             $table->text('description')->nullable();
-            $table->unsignedInteger('subcategory_id');
+            $table->unsignedInteger('category_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('status_id')->references('id')->on('statuses');
-            $table->foreign('subcategory_id')->references('id')->on('subcategories');
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 

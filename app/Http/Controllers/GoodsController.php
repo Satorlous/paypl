@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Good;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 /**
- * Контроллер для управления товарами и заказами (вместе так как логика одинаковая, одно зависит от другого)
+ * Контроллер для управления товарами
  *
  * Class GoodsController
+ *
  * @package App\Http\Controllers
  */
 class GoodsController extends Controller
@@ -28,6 +31,7 @@ class GoodsController extends Controller
      * Список заказов определенного пользователя
      *
      * @param int $id Идентификатор пользователя
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function ordersUser($id = 0)
@@ -36,14 +40,70 @@ class GoodsController extends Controller
     }
 
     /**
-     * Детальная страница товара
+     * Товар детально
      *
-     * @param int $id Id товара
+     * @param Request $request
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function goodsDetail($id =0)
+    public function goodsDetail(Request $request)
     {
         return view('info');
+    }
+
+    /**
+     * Список товаров в зависимости от параметра
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|array
+     */
+    public function goodsList(Request $request)
+    {
+        $aRequest = $request->json()->all();
+        //ToDo: переписать получение товаров в зависимости от идентификатора
+        switch ($aRequest['mode']) {
+            case 'popular':
+                return [
+                    'goods' => Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                        ->values()->each(
+                            function ($good) {
+                                if (count($good->media) > 0) {
+                                    $good->media_link = $good->media->first()->link;
+                                } else {
+                                    $good->media_link = '';
+                                }
+                            }),
+                ];
+                break;
+            case 'novelty':
+                return [
+                    'goods' => Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                        ->values()->each(
+                            function ($good) {
+                                if (count($good->media) > 0) {
+                                    $good->media_link = $good->media->first()->link;
+                                } else {
+                                    $good->media_link = '';
+                                }
+                            }),
+                ];
+                break;
+            case 'all':
+                return [
+                    'goods' => Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                        ->values()->each(
+                            function ($good) {
+                                if (count($good->media) > 0) {
+                                    $good->media_link = $good->media->first()->link;
+                                } else {
+                                    $good->media_link = '';
+                                }
+                            }),
+                ];
+                break;
+            default:
+                return [];
+        }
     }
 }

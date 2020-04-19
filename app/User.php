@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'login'
+        'name', 'email', 'password', 'login', 'avatar', 'balance', 'role_id', 'rating'
     ];
 
     /**
@@ -36,4 +36,59 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static $validate = [
+        'name'       => ['required', 'string', 'max:255'],
+        'email'      => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password'   => ['required', 'string', 'min:8', 'confirmed'],
+        'login'      => ['required', 'string', 'max:255'],
+    ];
+
+    /**
+     * @example $this->contactServices->first()->pivot->link
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function contactServices()
+    {
+        return $this->belongsToMany(ContactService::class, 'contact_service_user',
+            'user_id')->withPivot(['link']);
+    }
+
+    public function payServices()
+    {
+        return $this->belongsToMany(PayService::class, 'pay_service_user',
+            'user_id')->withPivot(['link']);
+    }
+
+    public function chats()
+    {
+        return $this->belongsToMany(Chat::class, 'parties',
+            'user_id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(Request::class, 'user_id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
+    }
+
+    public function goods()
+    {
+        return $this->hasMany(Good::class, 'user_id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'user_id');
+    }
 }
