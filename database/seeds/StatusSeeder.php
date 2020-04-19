@@ -66,7 +66,7 @@ class StatusSeeder extends Seeder
             ],
             [
                 'id'      => 102,
-                'name'    => 'Обращение назодится в обработке',
+                'name'    => 'Обращение находится в обработке',
                 'type'    => Status::TYPE_REQUEST,
                 'locked'  => true,
             ],

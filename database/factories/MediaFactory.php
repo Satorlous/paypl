@@ -12,5 +12,6 @@ $factory->define(Media::class, function (Faker $faker, $params) {
             .'&height='.$faker->randomNumber(3),
         'media_type_id' => MediaType::where('name', '=', 'http')->firstOrFail()['id'],
         'good_id'  => $params['good_id'],
+        'description'  => $faker->sentence()
     ];
 });
