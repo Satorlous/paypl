@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,15 +14,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('login', 'API\AuthController@login');
+Route::post('register', 'API\AuthController@register');
 
-
-Route::get('/goods', function (Request $request) {
-    header('Access-Control-Allow-Origin: *');
-    //return json_encode($request);
-    $r = stream_get_contents('http://localhost:3000');
-    var_dump($r);
-    return json_encode($r);
+Route::middleware('auth:api')->group(function () {
+    Route::post('details', 'API\AuthController@get_user_details_info');
 });
