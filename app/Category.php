@@ -44,4 +44,35 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent_id','id');
     }
+
+    /**
+     * Рекурсивный метод получения дочерних категорий
+     *
+     * @return array
+     *
+     */
+    public function getChildren()
+    {
+        $aResult = [];
+        $children = $this->children;
+        foreach ($children as $child) {
+            $aResult[$child->id] = $child->toArray();
+            $aResult[$child->id]['children'] = $child->getChildren();
+        }
+        return $aResult;
+    }
+
+    /**
+     * Возвращает главную родительскую категорию
+     *
+     * @return mixed
+     */
+    private function getMainParent()
+    {
+        if($this->parent != null) {
+            return $this->parent->getMainParent();
+        } else {
+            return $this;
+        }
+    }
 }

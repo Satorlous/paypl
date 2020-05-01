@@ -21,10 +21,7 @@ Route::get('/', 'SiteController@index')
 Route::get('/test', 'SiteController@test')
     ->name('test');
 
-Route::post('/goodsList', 'GoodsController@goodsList')
-    ->name('goodsListPost')->middleware(['checkGoodsParameters']);
-Route::get('/categoryMap', 'CategoriesController@getMap')
-    ->name('categoryMap');
+
 
 Route::get('/home',function () {
     return redirect('/');

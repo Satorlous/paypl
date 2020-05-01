@@ -17,22 +17,27 @@ class CheckGoodsParameters
     public function handle($request, Closure $next)
     {
         $uri = $request->path();
+        $validator = null;
         switch ($uri) {
-            case 'goodsList':
+            case 'api/goodsList':
                 $validator = Validator::make($request->json()->all(), [
-                    "page" => "required|integer",
-                    "count" => "required|integer",
-                    "mode"  => "required|string",
+                    "page"  => ["required","integer"],
+                    "count" => ["required","integer"],
+                    "mode"  => ["required","string"],
                 ]);
-
-                if ($validator->fails()) {
-                    return response(
-                        $validator->errors(),
-                        400
-                    );
-                }
+                break;
+            case 'api/productDetail':
+                $validator = Validator::make($request->json()->all(), [
+                    "slug" => ["required","string"],
+                ]);
                 break;
             default: break;
+        }
+        if ($validator->fails()) {
+            return response(
+                $validator->errors(),
+                400
+            );
         }
         return $next($request);
     }
