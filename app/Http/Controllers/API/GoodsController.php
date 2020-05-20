@@ -77,60 +77,52 @@ class GoodsController extends Controller
 
         switch ($aRequest['mode']) {
             case 'popular':
-                return [
-                    'goods' => Good::all()->forPage($aRequest['page'], $aRequest['count'])
-                        ->values()->each(
-                            function ($good) {
-                                if (count($good->media) > 0) {
-                                    $good->media_link = $good->media->first()->link;
-                                } else {
-                                    $good->media_link = '';
-                                }
-                                $good['category_slug'] = $good->category->slug;
-                            }),
-                ];
+                return Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                    ->values()->each(
+                        function ($good) {
+                            if (count($good->media) > 0) {
+                                $good->media_link = $good->media->first()->link;
+                            } else {
+                                $good->media_link = '';
+                            }
+                            $good['category_slug'] = $good->category->slug;
+                        });
                 break;
             case 'novelty':
-                return [
-                    'goods' => Good::all()->forPage($aRequest['page'], $aRequest['count'])
-                        ->values()->each(
-                            function ($good) {
-                                if (count($good->media) > 0) {
-                                    $good->media_link = $good->media->first()->link;
-                                } else {
-                                    $good->media_link = '';
-                                }
-                                $good['category_slug'] = $good->category->slug;
-                            }),
-                ];
+                return Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                    ->values()->each(
+                        function ($good) {
+                            if (count($good->media) > 0) {
+                                $good->media_link = $good->media->first()->link;
+                            } else {
+                                $good->media_link = '';
+                            }
+                            $good['category_slug'] = $good->category->slug;
+                        });
                 break;
             case 'sale':
-                return [
-                    'goods' => Good::all()->forPage($aRequest['page'], $aRequest['count'])
-                        ->values()->each(
-                            function ($good) {
-                                if (count($good->media) > 0) {
-                                    $good->media_link = $good->media->first()->link;
-                                } else {
-                                    $good->media_link = '';
-                                }
-                                $good['category_slug'] = $good->category->slug;
-                            }),
-                ];
+                return Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                    ->values()->each(
+                        function ($good) {
+                            if (count($good->media) > 0) {
+                                $good->media_link = $good->media->first()->link;
+                            } else {
+                                $good->media_link = '';
+                            }
+                            $good['category_slug'] = $good->category->slug;
+                        });
                 break;
             case 'all':
-                return [
-                    'goods' => Good::all()->forPage($aRequest['page'], $aRequest['count'])
-                        ->values()->each(
-                            function ($good) {
-                                if (count($good->media) > 0) {
-                                    $good->media_link = $good->media->first()->link;
-                                } else {
-                                    $good->media_link = '';
-                                }
-                                $good['category_slug'] = $good->category->slug;
-                            }),
-                ];
+                return Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                    ->values()->each(
+                        function ($good) {
+                            if (count($good->media) > 0) {
+                                $good->media_link = $good->media->first()->link;
+                            } else {
+                                $good->media_link = '';
+                            }
+                            $good['category_slug'] = $good->category->slug;
+                        });
                 break;
             default:
                 return [];
@@ -143,16 +135,18 @@ class GoodsController extends Controller
      * @param Request $request
      *
      */
-    public function good(Request $request) {
+    public function good(Request $request)
+    {
         $aRequest = $request->json()->all();
         //ToDo: тут тоже с полями. список тот же + media все, еще добавляется продавец от него нужен только login
-        $good = Good::all(['category_id', 'description', 'discount', 'id', 'name',
-            'price', 'quantity', 'slug', 'user_id'])->where('slug','=',$aRequest['slug'])
-            ->each(function ($good) {
-                $good->media;
-            })->first();
-        return [
-            'product' => $good
-        ];
+        return Good::all(
+            [
+                'category_id', 'description', 'discount', 'id', 'name',
+                'price', 'quantity', 'slug', 'user_id',
+            ])->where('slug', '=', $aRequest['slug'])
+            ->each(
+                function ($good) {
+                    $good->media;
+                })->first();
     }
 }

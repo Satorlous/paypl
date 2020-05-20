@@ -38,3 +38,9 @@ Route::post('/productDetail','API\GoodsController@good')->middleware(['checkGood
 Route::post('/categoryMap', 'API\CategoriesController@getMap')
     ->name('categoryMap');
 
+Route::post('/category', 'API\CategoriesController@getCategory')
+    ->middleware(['checkCategoryParameters']);
+
+Route::get('/catalog/{slug}','API\CategoriesController@getBreadcrumbs');
+Route::get('/catalog','API\CategoriesController@getBreadcrumbs');
+Route::get('/catalog/{slug}/{product}','API\CategoriesController@getBreadcrumbs');
