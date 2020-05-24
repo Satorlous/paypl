@@ -14,7 +14,8 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
         "laravel/passport": "^8.4",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "symfony/translation": "4.3.8"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

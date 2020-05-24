@@ -22,14 +22,19 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request) {
+        $aRequest =  $request->json()->all();
         $credential = [
-           'email' => $request->email,
-            'password' => $request->password,
+            'email' => $aRequest['email'] ?? '',
+            'password' => $aRequest['password'] ?? '',
         ];
 
         if(auth()->attempt($credential)) {
             $user = Auth::user();
-            $token['token'] = $this->get_user_token($user, self::TokenName);
+            $token = [
+                'token'  => $this->get_user_token($user, self::TokenName),
+                'name'   => $user['name'],
+                'avatar' => $user['avatar']
+            ];
             $response = Response::HTTP_OK;
             return $this->get_http_response( $response,'success', $token);
         } else {
@@ -47,22 +52,39 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), User::$validate);
+        $data = $request->all();
+        if (empty($data['login'])) {
+            $data['login'] = User::getUniqueToken();
+        }
+        $validator = Validator::make($data, User::$validate);
 
         if ($validator->fails()) {
-            return \response()->json(['error' => $validator->errors()]);
+            return \response()->json(['status' => 'error', 'error' => $validator->errors()]);
         }
 
-        $data = $request->all();
-
         $data['password'] = Hash::make($data['password']);
+        if (!empty($data['avatar']) && $request->hasfile('avatar')) {
+            if (!file_exists(public_path() . '/images/avatars/')) {
+                mkdir(public_path() . '/images/avatars/');
+            }
+
+            $file = $request->file('avatar');
+            $extension = $file->getClientOriginalExtension(); // getting image extension
+            $filename =time().'.'.$extension;
+            $file->move(public_path() . '/images/avatars/', $filename);
+            $data['avatar'] = asset('/images/avatars/'. $filename);
+        } else {
+            $data['avatar'] = asset('/images/user.png');
+        }
 
         $user = User::create($data);
 
         $success = [
-            'token' => $this->get_user_token($user, self::TokenName),
-            'name' => $user->name
+            'token'  => $this->get_user_token($user, self::TokenName),
+            'name'   => $user->name,
+            'avatar' => $user->avatar,
         ];
+
 
         return $this->get_http_response(Response::HTTP_CREATED,"success", $success);
 

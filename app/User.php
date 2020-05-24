@@ -42,10 +42,10 @@ class User extends Authenticatable
         'name'       => ['required', 'string', 'max:255'],
         'email'      => ['required', 'string', 'email', 'max:255', 'unique:users'],
         'password'   => ['required', 'string', 'min:8', 'confirmed'],
-        'login'      => ['required', 'string', 'max:255'],
+        'login'      => ['required', 'string', 'max:255', 'unique:users'],
     ];
 
-    /**
+    /**im
      * @example $this->contactServices->first()->pivot->link
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -91,5 +91,12 @@ class User extends Authenticatable
     public function messages()
     {
         return $this->hasMany(Message::class, 'user_id');
+    }
+
+    public static function getUniqueToken()
+    {
+        $value = 100000000;
+        $value -= self::all()->last()->id + 1;
+        return "id$value";
     }
 }
