@@ -139,14 +139,24 @@ class GoodsController extends Controller
     {
         $aRequest = $request->json()->all();
         //ToDo: тут тоже с полями. список тот же + media все, еще добавляется продавец от него нужен только login
-        return Good::all(
+        return Good::withTrashed()->get(
             [
-                'category_id', 'description', 'discount', 'id', 'name',
-                'price', 'quantity', 'slug', 'user_id',
-            ])->where('slug', '=', $aRequest['slug'])
+                'category_id',
+                'description',
+                'discount',
+                'id',
+                'name',
+                'price',
+                'quantity',
+                'slug',
+                'user_id',
+                'deleted_at'
+            ])
+            ->where('slug', '=', $aRequest['slug'])
             ->each(
                 function ($good) {
                     $good->media;
+                    $good['is_deleted'] = !empty($good->deleted_at);
                 })->first();
     }
 }

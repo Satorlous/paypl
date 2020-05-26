@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Role;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,7 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
+
         $data = $request->all();
         if (empty($data['login'])) {
             $data['login'] = User::getUniqueToken();
@@ -60,7 +62,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return \response()->json(['status' => 'error', 'error' => $validator->errors()]);
         }
-
+        $data['role_id'] = Role::ROLE_BUYER;
         $data['password'] = Hash::make($data['password']);
         if (!empty($data['avatar']) && $request->hasfile('avatar')) {
             if (!file_exists(public_path() . '/images/avatars/')) {
