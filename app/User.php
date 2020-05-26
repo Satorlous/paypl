@@ -99,4 +99,22 @@ class User extends Authenticatable
         $value -= self::all()->last()->id + 1;
         return "id$value";
     }
+
+    /**
+     * Проверка пользователя на продавца
+     *
+     * @return bool
+     */
+    public function isSeller() {
+        return $this->role->id == Role::ROLE_SELLER;
+    }
+
+    public function getDataForFrontend()
+    {
+        return [
+            'name'   => $this->name,
+            'avatar' => $this->avatar,
+            'seller' => $this->isSeller(),
+        ];
+    }
 }

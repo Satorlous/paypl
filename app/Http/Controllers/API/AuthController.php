@@ -32,8 +32,7 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = [
                 'token'  => $this->get_user_token($user, self::TokenName),
-                'name'   => $user['name'],
-                'avatar' => $user['avatar']
+                'user'   => $user->getDataForFrontend()
             ];
             $response = Response::HTTP_OK;
             return $this->get_http_response( $response,'success', $token);
@@ -81,8 +80,7 @@ class AuthController extends Controller
 
         $success = [
             'token'  => $this->get_user_token($user, self::TokenName),
-            'name'   => $user->name,
-            'avatar' => $user->avatar,
+            'user'   => $user->getDataForFrontend(),
         ];
 
 
