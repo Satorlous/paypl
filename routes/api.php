@@ -41,6 +41,9 @@ Route::post('/categoryMap', 'API\CategoriesController@getMap')
 Route::post('/category', 'API\CategoriesController@getCategory')
     ->middleware(['checkCategoryParameters']);
 
+/*
+ * Get breadcrumbs for Catalog pages
+ */
 Route::get('/catalog/{slug}','API\CategoriesController@getBreadcrumbs');
 Route::get('/catalog','API\CategoriesController@getBreadcrumbs');
 Route::get('/catalog/{slug}/{product}','API\CategoriesController@getBreadcrumbs');
