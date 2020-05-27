@@ -4,50 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87b3f5015a39d89c2955e73d663594a3",
+    "content-hash": "9e3d5d09e74bd091110d61b5e763592e",
     "packages": [
         {
-            "name": "caouecs/laravel-lang",
-            "version": "6.0.2",
+            "name": "asm89/stack-cors",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/caouecs/Laravel-lang.git",
-                "reference": "6769c655a02f77736e1d71d97b3f9e7986bb501b"
+                "url": "https://github.com/asm89/stack-cors.git",
+                "reference": "1913589c6de3cc09de5a9bdb4f46fbd550246b40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/caouecs/Laravel-lang/zipball/6769c655a02f77736e1d71d97b3f9e7986bb501b",
-                "reference": "6769c655a02f77736e1d71d97b3f9e7986bb501b",
+                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/1913589c6de3cc09de5a9bdb4f46fbd550246b40",
+                "reference": "1913589c6de3cc09de5a9bdb4f46fbd550246b40",
                 "shasum": ""
             },
             "require": {
-                "ext-json": "*"
+                "php": "^7.0",
+                "symfony/http-foundation": "~2.7|~3.0|~4.0|~5.0",
+                "symfony/http-kernel": "~2.7|~3.0|~4.0|~5.0"
             },
-            "suggest": {
-                "ablunier/laravel-lang-installer": "Command for easily add languages to a Laravel project",
-                "andrey-helldar/laravel-lang-publisher": "Easy installation and update of translation files for your project",
-                "arcanedev/laravel-lang": "Translations manager and checker for Laravel 5",
-                "overtrue/laravel-lang": "Command to add languages in your project"
+            "require-dev": {
+                "phpunit/phpunit": "^6|^7|^8|^9",
+                "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Asm89\\Stack\\": "src/"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "caouecs",
-                    "email": "caouecs@caouecs.net"
+                    "name": "Alexander",
+                    "email": "iam.asm89@gmail.com"
                 }
             ],
-            "description": "Languages for Laravel",
+            "description": "Cross-origin resource sharing library and stack middleware",
+            "homepage": "https://github.com/asm89/stack-cors",
             "keywords": [
-                "lang",
-                "languages",
-                "laravel",
-                "lpm"
+                "cors",
+                "stack"
             ],
-            "time": "2020-05-13T07:58:35+00:00"
+            "time": "2020-04-20T10:11:31+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -499,6 +508,76 @@
                 "php"
             ],
             "time": "2020-03-25T18:49:23+00:00"
+        },
+        {
+            "name": "fruitcake/laravel-cors",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fruitcake/laravel-cors.git",
+                "reference": "8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fruitcake/laravel-cors/zipball/8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c",
+                "reference": "8cc9f7e5f1b9b280ae2378b3624e6b5603e63e8c",
+                "shasum": ""
+            },
+            "require": {
+                "asm89/stack-cors": "^2",
+                "illuminate/contracts": "^5.6|^6.0|^7.0|^8.0",
+                "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
+                "php": ">=7.1",
+                "symfony/http-foundation": "^4.0|^5.0",
+                "symfony/http-kernel": "^4.0|^5.0"
+            },
+            "require-dev": {
+                "laravel/framework": "^5.5|^6.0|^7.0|^8.0",
+                "orchestra/dusk-updater": "^1.2",
+                "orchestra/testbench": "^3.5|^4.0|^5.0|^6.0",
+                "orchestra/testbench-dusk": "^5.1",
+                "phpro/grumphp": "^0.16|^0.17",
+                "phpunit/phpunit": "^6.0|^7.0|^8.0",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Fruitcake\\Cors\\CorsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fruitcake\\Cors\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fruitcake",
+                    "homepage": "https://fruitcake.nl"
+                },
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application",
+            "keywords": [
+                "api",
+                "cors",
+                "crossdomain",
+                "laravel"
+            ],
+            "time": "2020-05-11T09:29:18+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -4287,6 +4366,49 @@
                 }
             ],
             "time": "2018-12-13T10:34:14+00:00"
+        },
+        {
+            "name": "caouecs/laravel-lang",
+            "version": "6.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/caouecs/Laravel-lang.git",
+                "reference": "6769c655a02f77736e1d71d97b3f9e7986bb501b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/caouecs/Laravel-lang/zipball/6769c655a02f77736e1d71d97b3f9e7986bb501b",
+                "reference": "6769c655a02f77736e1d71d97b3f9e7986bb501b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*"
+            },
+            "suggest": {
+                "ablunier/laravel-lang-installer": "Command for easily add languages to a Laravel project",
+                "andrey-helldar/laravel-lang-publisher": "Easy installation and update of translation files for your project",
+                "arcanedev/laravel-lang": "Translations manager and checker for Laravel 5",
+                "overtrue/laravel-lang": "Command to add languages in your project"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "caouecs",
+                    "email": "caouecs@caouecs.net"
+                }
+            ],
+            "description": "Languages for Laravel",
+            "keywords": [
+                "lang",
+                "languages",
+                "laravel",
+                "lpm"
+            ],
+            "time": "2020-05-13T07:58:35+00:00"
         },
         {
             "name": "composer/ca-bundle",
