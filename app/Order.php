@@ -5,6 +5,35 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Order
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $status_id
+ * @property string $token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Good[] $goods
+ * @property-read int|null $goods_count
+ * @property-read \App\Status $status
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Order onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Order withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Order withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Order extends Model
 {
     use SoftDeletes;

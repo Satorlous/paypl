@@ -5,6 +5,50 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Good
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $name
+ * @property float $price
+ * @property int|null $quantity
+ * @property float|null $discount
+ * @property int $status_id
+ * @property string|null $description
+ * @property int $category_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $slug
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Category $category
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
+ * @property-read int|null $orders_count
+ * @property-read \App\Status $status
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Good onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereDiscount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Good whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Good withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Good withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Good extends Model
 {
     use SoftDeletes;

@@ -44,3 +44,9 @@ Route::post('/category', 'API\CategoriesController@getCategory')
 Route::get('/catalog/{slug}','API\CategoriesController@getBreadcrumbs');
 Route::get('/catalog','API\CategoriesController@getBreadcrumbs');
 Route::get('/catalog/{slug}/{product}','API\CategoriesController@getBreadcrumbs');
+
+/*
+ * CRUD
+ */
+Route::post('/goods/test', 'API\GoodsDataController@test');
+Route::post('/goods/store', 'API\GoodsDataController@store');

@@ -5,6 +5,34 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Category
+ *
+ * @property int $id
+ * @property string $name
+ * @property float $tax
+ * @property int|null $parent_id
+ * @property string $slug
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Category[] $children
+ * @property-read int|null $children_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Good[] $goods
+ * @property-read int|null $goods_count
+ * @property-read \App\Category|null $parent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Category onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereParentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereTax($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Category withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Category withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Category extends Model
 {
     use SoftDeletes;
