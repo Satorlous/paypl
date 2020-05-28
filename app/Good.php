@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 /**
  * App\Good
@@ -70,6 +71,19 @@ class Good extends Model
         'description'   => ['string'],
         'category_id'   => ['required', 'exists:App\Category,id'],
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        //ToDo: почему то не работают эвенты
+        self::created(function ($model) {
+            $model->slug = Str::slug($model->name);
+        });
+
+        self::updated(function ($model) {
+            $model->slug = Str::slug($model->name);
+        });
+    }
 
     public function user()
     {
