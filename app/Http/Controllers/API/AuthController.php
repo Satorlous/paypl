@@ -57,7 +57,6 @@ class AuthController extends Controller
             $data['login'] = User::getUniqueToken();
         }
         $validator = Validator::make($data, User::$validate);
-        file_put_contents('F:/data.txt', json_encode($data));
         if ($validator->fails()) {
             return \response()->json(['status' => 'error', 'error' => $validator->errors()]);
         }

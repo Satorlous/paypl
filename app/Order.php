@@ -38,6 +38,11 @@ class Order extends Model
 {
     use SoftDeletes;
 
+    const ORDER_DRAFT = '10';
+    const ORDER_CANCELLED = '11';
+    const ORDER_PAID = '12';
+    const ORDER_FINISHED = '13';
+
     protected $table = 'orders';
 
     protected $fillable = [

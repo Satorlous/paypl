@@ -14,7 +14,7 @@ class CategoriesController extends Controller
     public function getMap()
     {
         return
-            Category::all(['id', 'name', 'slug', 'parent_id'])->whereStrict('parent_id', null)->each(
+            Category::all(['id', 'name', 'slug', 'parent_id', 'tax'])->whereStrict('parent_id', null)->each(
                 function ($item) {
                     $item['children'] = $item->getChildren();
                     unset($item['parent_id']);

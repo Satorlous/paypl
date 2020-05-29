@@ -95,7 +95,7 @@ class DatabaseSeeder extends Seeder
                 $user->orders()->saveMany(
                     factory(Order::class, rand(1, 5))->create(
                         [
-                            'user_id' => $user->id, 'status_id' => 3,
+                            'user_id' => $user->id, 'status_id' => rand(10,13),
                         ]
                     )->each(function ($order) {
                             $goods = [];

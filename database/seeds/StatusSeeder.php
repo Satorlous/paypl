@@ -47,6 +47,13 @@ class StatusSeeder extends Seeder
             ],
             [
                 'id'      => 12,
+                'name'    => 'Заказ оплачен',
+                'type'    => Status::TYPE_ORDER,
+                'locked'  => true,
+            ],
+
+            [
+                'id'      => 13,
                 'name'    => 'Сделка завершена',
                 'type'    => Status::TYPE_ORDER,
                 'locked'  => true,

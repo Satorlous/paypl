@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -61,10 +62,17 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRoleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property float $withdraw_balance
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereWithdrawBalance($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\User withoutTrashed()
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -98,6 +106,13 @@ class User extends Authenticatable
         'email'      => ['required', 'string', 'email', 'max:255', 'unique:users'],
         'password'   => ['required', 'string', 'min:8', 'confirmed'],
         'login'      => ['required', 'string', 'max:255', 'unique:users'],
+    ];
+
+    public static $validate_update = [
+        'name'       => ['string', 'max:255'],
+        'email'      => ['string', 'email', 'max:255', 'unique:users'],
+        'password'   => ['string', 'min:8'],
+        'login'      => ['string', 'max:255', 'unique:users'],
     ];
 
     /**im

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Category;
 use App\Good;
 use App\Http\Controllers\Controller;
 use App\Media;
@@ -17,18 +18,19 @@ class GoodsDataController extends Controller
         $data = $request->all();
         $validator = Validator::make($data, Good::$validate);
         if($validator->fails())
-            return self::http_response(
-                ['status' => 'error', 'error' => $validator->errors()],
-                Response::HTTP_BAD_REQUEST);
+            return self::bad_request($validator->errors());
+        $data['category_id'] = Category::whereSlug($data['category_slug'])->first()->id;
         $good = Good::create($data);
         //Files
         $path_directory = '/images/media/'.$good->id.'/';
-        if (!empty($data['medias']) && $request->hasfile('medias')) {
-            if (!file_exists(public_path() . $path_directory)) {
+        if (!empty($data['medias']) && $request->hasfile('medias'))
+        {
+            if (!file_exists(public_path() . $path_directory))
                 mkdir(public_path() . $path_directory);
-            }
             $files = $request->file('medias');
-            foreach ($files as $file) {
+
+            foreach ($files as $file)
+            {
                 $extension = $file->getClientOriginalExtension();
                 $filename = time().'.'.$extension;
                 $file->move(public_path() . $path_directory, $filename);
@@ -42,7 +44,7 @@ class GoodsDataController extends Controller
                 );
             }
         }
-        return self::http_response(['status' => 'success'], Response::HTTP_CREATED);
+        return self::success(Response::HTTP_CREATED);
     }
 
     function update(Request $request)
@@ -53,9 +55,7 @@ class GoodsDataController extends Controller
             $model->fill($data);
             $validator = Validator::make($model->toArray(), Good::$validate);
             if ($validator->fails())
-                return self::http_response(
-                    ['status' => 'error', 'error' => $validator->errors()],
-                    Response::HTTP_BAD_REQUEST);
+                return self::bad_request($validator->errors());
             $model->save();
             //Files
             $path_directory = '/images/media/'.$model->id.'/';
@@ -78,37 +78,31 @@ class GoodsDataController extends Controller
                     );
                 }
             }
-            return self::http_response(['status' => 'success'], Response::HTTP_OK);
+            return self::success(Response::HTTP_OK);
         }
-        return self::http_response(
-            ['status' => 'error', 'error' => ['id' => 'Товар с данным ID не найден']],
-            Response::HTTP_BAD_REQUEST);
+        return self::bad_request('Товар с данным ID не найден');
     }
 
     function destroy(Request $request)
     {
-        $data = $request->all();
+        $data = $request->json()->all();
         if($model = Good::withTrashed()->get()->where('id', $data['id'])->first())
         {
             $model->delete();
-            return self::http_response(['status' => 'success'], Response::HTTP_OK);
+            return self::success(Response::HTTP_OK);
         }
-        return self::http_response(
-            ['status' => 'error', 'error' => ['id' => 'Товар с данным ID не найден']],
-            Response::HTTP_BAD_REQUEST);
+        return self::bad_request('Товар с данным ID не найден');
     }
 
     function restore(Request $request)
     {
-        $data = $request->all();
+        $data = $request->json()->all();
         if($model = Good::withTrashed()->get()->where('id', $data['id'])->first())
         {
             $model->restore();
-            return self::http_response(['status' => 'success'], Response::HTTP_OK);
+            return self::success(Response::HTTP_OK);
         }
-        return self::http_response(
-            ['status' => 'error', 'error' => ['id' => 'Товар с данным ID не найден']],
-            Response::HTTP_BAD_REQUEST);
+        return self::bad_request('Товар с данным ID не найден');
     }
 
     function http_response($data, int $response_type)
@@ -118,5 +112,17 @@ class GoodsDataController extends Controller
             ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
             JSON_UNESCAPED_UNICODE
         );
+    }
+
+    function success(int $response_type)
+    {
+        return self::http_response(['status' => 'success'], $response_type);
+    }
+
+    function bad_request($error)
+    {
+        return self::http_response(
+            ['status' => 'error', 'error' => ['id' => $error]],
+            Response::HTTP_BAD_REQUEST);
     }
 }
