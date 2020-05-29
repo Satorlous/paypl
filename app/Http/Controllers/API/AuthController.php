@@ -52,13 +52,12 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-
         $data = $request->all();
         if (empty($data['login'])) {
             $data['login'] = User::getUniqueToken();
         }
         $validator = Validator::make($data, User::$validate);
-
+        file_put_contents('F:/data.txt', json_encode($data));
         if ($validator->fails()) {
             return \response()->json(['status' => 'error', 'error' => $validator->errors()]);
         }

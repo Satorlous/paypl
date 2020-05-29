@@ -48,6 +48,10 @@ Route::get('/catalog/{slug}/{product}','API\CategoriesController@getBreadcrumbs'
 /*
  * CRUD
  */
+Route::post('/test', function ()
+{
+    return \App\Good::find(10);
+});
 Route::post('/goods/store', 'API\GoodsDataController@store');
 Route::post('/goods/update', 'API\GoodsDataController@update');
 Route::post('/goods/destroy', 'API\GoodsDataController@destroy');

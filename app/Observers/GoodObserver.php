@@ -13,10 +13,10 @@ class GoodObserver
      * @param  \App\Good  $good
      * @return void
      */
-    public function created(Good $good)
+    public function creating(Good $good)
     {
-        $good->slug = Str::slug($good->name);
-        $good->save();
+        $i = Good::max('id')+1;
+        $good->slug = 'product'.$i;
     }
 
     /**
@@ -25,10 +25,9 @@ class GoodObserver
      * @param  \App\Good  $good
      * @return void
      */
-    public function updated(Good $good)
+    public function updating(Good $good)
     {
-        $good->slug = Str::slug($good->name);
-        $good->save();
+
     }
 
     /**

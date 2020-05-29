@@ -72,19 +72,6 @@ class Good extends Model
         'category_id'   => ['required', 'exists:App\Category,id'],
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-        //ToDo: почему то не работают эвенты
-        self::created(function ($model) {
-            $model->slug = Str::slug($model->name);
-        });
-
-        self::updated(function ($model) {
-            $model->slug = Str::slug($model->name);
-        });
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
