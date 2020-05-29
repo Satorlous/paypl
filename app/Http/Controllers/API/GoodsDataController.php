@@ -53,7 +53,7 @@ class GoodsDataController extends Controller
         if($model = Good::withTrashed()->get()->where('id', $data['id'])->first())
         {
             $model->fill($data);
-            $validator = Validator::make($model->toArray(), Good::$validate);
+            $validator = Validator::make($model->toArray(), Good::$validate_update);
             if ($validator->fails())
                 return self::bad_request($validator->errors());
             $model->save();

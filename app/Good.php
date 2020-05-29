@@ -67,7 +67,17 @@ class Good extends Model
         'price'         => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
         'discount'      => ['regex:/^\d+(\.\d{1,2})?$/'],
         'user_id'       => ['required', 'exists:App\User,id'],
-        'status_id'     => ['required', 'exists:App\Status,id'],
+        'quantity'      => ['nullable', 'integer', 'min:1'],
+        'description'   => ['string'],
+        'category_id'   => ['required', 'exists:App\Category,id'],
+    ];
+
+    public static $validate_update = [
+        'name'          => ['required', 'string'],
+        'price'         => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
+        'discount'      => ['regex:/^\d+(\.\d{1,2})?$/'],
+        'user_id'       => ['required', 'exists:App\User,id'],
+        'status_id'       => ['required', 'exists:App\Status,id'],
         'quantity'      => ['nullable', 'integer', 'min:1'],
         'description'   => ['string'],
         'category_id'   => ['required', 'exists:App\Category,id'],

@@ -17,6 +17,7 @@ class GoodObserver
     {
         $i = Good::max('id')+1;
         $good->slug = 'product'.$i;
+        $good->status_id = 1;
     }
 
     /**
