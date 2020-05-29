@@ -19,7 +19,7 @@ Route::post('/profile/register', 'API\AuthController@register');
 
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('/profile/detail', 'API\AuthController@get_user_details_info');
+    Route::post('/profile/detail', 'API\AuthController@get_users_details_info');
 });
 
 /*

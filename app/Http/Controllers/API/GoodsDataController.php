@@ -7,7 +7,10 @@ use App\Good;
 use App\Http\Controllers\Controller;
 use App\Media;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\Self_;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
 
@@ -18,21 +21,28 @@ class GoodsDataController extends Controller
         $data = $request->all();
         $validator = Validator::make($data, Good::$validate);
         if($validator->fails())
-            return self::bad_request($validator->errors());
+            return self::bad_request([$validator->errors()]);
         $data['category_id'] = Category::whereSlug($data['category_slug'])->first()->id;
+        $data['user_id'] = \auth('api')->user()->id;
         $good = Good::create($data);
         //Files
-        $path_directory = '/images/media/'.$good->id.'/';
-        if (!empty($data['medias']) && $request->hasfile('medias'))
+        $path_directory = '/images/media/';
+        if (!empty($data['medias']))
         {
             if (!file_exists(public_path() . $path_directory))
                 mkdir(public_path() . $path_directory);
-            $files = $request->file('medias');
 
-            foreach ($files as $file)
+            $path_directory .= $good->id.'/';
+            mkdir(public_path() . $path_directory);
+
+            for ($i =0; true; ++$i)
             {
+                if (!$request->hasFile("media_$i")) {
+                    break;
+                }
+                $file = $request["media_$i"];
                 $extension = $file->getClientOriginalExtension();
-                $filename = time().'.'.$extension;
+                $filename = time(). $i.'.'.$extension;
                 $file->move(public_path() . $path_directory, $filename);
                 $full_file_path = asset($path_directory.$filename);
                 Media::create(
