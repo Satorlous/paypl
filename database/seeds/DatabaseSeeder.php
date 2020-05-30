@@ -80,7 +80,6 @@ class DatabaseSeeder extends Seeder
                          */
                         factory(Media::class, rand(3, 40))->create(['good_id' => $good->id]);
                     });
-                factory(Request::class, rand(0, 2))->create(['user_id' => $user->id]);
             }
         );
 
@@ -99,7 +98,7 @@ class DatabaseSeeder extends Seeder
                         ]
                     )->each(function ($order) {
                             $goods = [];
-                            foreach (Good::all()->random(rand(1, 4)) as $good) {
+                            foreach (Good::all()->random(1) as $good) {
                                 $goods[] = [
                                     'good_id' => $good['id'],
                                     'quantity' => rand(1, $good->quantity),
@@ -111,6 +110,10 @@ class DatabaseSeeder extends Seeder
                         }
                     )
                 );
+                /**
+                 * Seeding 0-1 request for each existing buyer
+                 */
+                factory(Request::class, rand(0,1))->create(['user_id' => $user->id]);
             }
         );
         /**

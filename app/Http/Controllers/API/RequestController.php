@@ -8,7 +8,6 @@ use App\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class RequestController extends Controller
 {
     public function get()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Good;
 use App\Http\Controllers\Controller;
+use App\Order;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -137,7 +138,9 @@ class GoodsController extends Controller
      */
     public function good(Request $request)
     {
+        $user = \auth('api')->user();
         $aRequest = $request->json()->all();
+        $slug = $aRequest['slug'];
         //ToDo: тут тоже с полями. список тот же + media все, еще добавляется продавец от него нужен только login
         return Good::withTrashed()->get(
             [
@@ -152,11 +155,23 @@ class GoodsController extends Controller
                 'user_id',
                 'deleted_at'
             ])
-            ->where('slug', '=', $aRequest['slug'])
+            ->where('slug', '=', $slug)
             ->each(
-                function ($good) {
+                function ($good) use ($user, $slug) {
                     $good->media;
                     $good['is_deleted'] = !empty($good->deleted_at);
+                    if ($user) {
+                        $count = Order::with('goods')->whereHas('goods',
+                            function ($good) use ($slug) {
+                                $good->where('slug', '=', $slug);
+                            })->where([
+                            'user_id' => $user->id,
+                            'status_id' => Order::STATUS_DRAFT
+                        ])->count();
+                        $good['in_order'] = $count > 0;
+                    }
+                    else
+                        $good['in_order'] = false;
                 })->first();
     }
 }

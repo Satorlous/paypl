@@ -55,6 +55,13 @@ class OrdersDataController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->json()->all();
+        $slug = $data['slug'];
+        $good = Good::whereSlug($slug)->first();
+        $tax = $good->category->tax;
+        $price = $good->price;
+        $pay_login = \Config::get('constants.payment.login');
+        $pay_pass  = \Config::get('constants.payment.pass');
 
     }
 }

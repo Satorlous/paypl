@@ -1,5 +1,6 @@
 <?php
 
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/orders/buyer', 'API\OrdersDataController@orderListByBuyer');
     Route::post('/orders/owner', 'API\OrdersDataController@orderListByGoodOwner');
+    Route::post('/orders/store', 'API\OrdersDataController@store');
 
     Route::post('/request/get', 'API\RequestController@get');
     Route::post('/request/store', 'API\RequestController@store');
@@ -67,6 +69,14 @@ Route::get('/catalog/{slug}/{product}', 'API\CategoriesController@getBreadcrumbs
  * CRUD
  */
 Route::post('/test', function () {
-
+    $user = \auth('api')->user();
+    $count = Order::with('goods')->whereHas('goods', function ($good)
+    {
+        $good->where('slug', '=', 'product97');
+    })->where([
+        'user_id' => 41,
+        'status_id' => Order::STATUS_DRAFT
+    ])->count();
+    dd($count);
 });
 
