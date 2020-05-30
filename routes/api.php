@@ -30,7 +30,7 @@ Route::post('/goodsList', 'API\GoodsController@goodsList')
 /*
  * Get detail info about good
  */
-Route::post('/productDetail','API\GoodsController@good')->middleware(['checkGoodsParameters']);
+Route::post('/productDetail', 'API\GoodsController@good')->middleware(['checkGoodsParameters']);
 
 /*
  * Get categories without authorization
@@ -41,25 +41,27 @@ Route::post('/categoryMap', 'API\CategoriesController@getMap')
 Route::post('/category', 'API\CategoriesController@getCategory')
     ->middleware(['checkCategoryParameters']);
 
-Route::get('/catalog/{slug}','API\CategoriesController@getBreadcrumbs');
-Route::get('/catalog','API\CategoriesController@getBreadcrumbs');
-Route::get('/catalog/{slug}/{product}','API\CategoriesController@getBreadcrumbs');
+Route::get('/catalog/{slug}', 'API\CategoriesController@getBreadcrumbs');
+Route::get('/catalog', 'API\CategoriesController@getBreadcrumbs');
+Route::get('/catalog/{slug}/{product}', 'API\CategoriesController@getBreadcrumbs');
 
 /*
  * CRUD
  */
-Route::post('/test', function ()
-{
-    return \App\User::find(10);
+Route::post('/test', function () {
+
 });
-Route::post('/goods/store',   'API\GoodsDataController@store');
-Route::post('/goods/update',  'API\GoodsDataController@update');
+Route::post('/goods/store', 'API\GoodsDataController@store');
+Route::post('/goods/update', 'API\GoodsDataController@update');
 Route::post('/goods/destroy', 'API\GoodsDataController@destroy');
 Route::post('/goods/restore', 'API\GoodsDataController@restore');
 
-Route::post('/users/update',  'API\UsersDataController@update');
+Route::post('/users/update', 'API\UsersDataController@update');
 Route::post('/users/destroy', 'API\UsersDataController@destroy');
 Route::post('/users/restore', 'API\UsersDataController@restore');
 
 Route::post('/orders/buyer', 'API\OrdersDataController@orderListByBuyer');
 Route::post('/orders/owner', 'API\OrdersDataController@orderListByGoodOwner');
+
+Route::post('/request/store', 'API\RequestController@store');
+Route::post('/request/update', 'API\RequestController@update');

@@ -45,7 +45,7 @@ class GoodsDataController extends Controller
                 $filename = time(). $i.'.'.$extension;
                 $file->move(public_path() . $path_directory, $filename);
                 $full_file_path = asset($path_directory.$filename);
-                Media::create(
+                $media = Media::create(
                     [
                         'good_id' => $good->id,
                         'link' => $full_file_path,
@@ -69,17 +69,25 @@ class GoodsDataController extends Controller
             $model->save();
             //Files
             $path_directory = '/images/media/'.$model->id.'/';
-            if (!empty($data['medias']) && $request->hasfile('medias')) {
-                if (!file_exists(public_path() . $path_directory)) {
+            if (!empty($data['medias']))
+            {
+                if (!file_exists(public_path() . $path_directory))
                     mkdir(public_path() . $path_directory);
-                }
-                $files = $request->file('medias');
-                foreach ($files as $file) {
+
+                $path_directory .= $model->id.'/';
+                (public_path() . $path_directory);
+
+                for ($i =0; true; ++$i)
+                {
+                    if (!$request->hasFile("media_$i")) {
+                        break;
+                    }
+                    $file = $request["media_$i"];
                     $extension = $file->getClientOriginalExtension();
-                    $filename = time().'.'.$extension;
+                    $filename = time(). $i.'.'.$extension;
                     $file->move(public_path() . $path_directory, $filename);
                     $full_file_path = asset($path_directory.$filename);
-                    Media::create(
+                    $media = Media::create(
                         [
                             'good_id' => $model->id,
                             'link' => $full_file_path,
@@ -90,7 +98,7 @@ class GoodsDataController extends Controller
             }
             return self::success(Response::HTTP_OK);
         }
-        return self::bad_request('Товар с данным ID не найден');
+        return self::bad_request(['id' => 'Товар с данным ID не найден']);
     }
 
     function destroy(Request $request)
@@ -101,7 +109,7 @@ class GoodsDataController extends Controller
             $model->delete();
             return self::success(Response::HTTP_OK);
         }
-        return self::bad_request('Товар с данным ID не найден');
+        return self::bad_request(['id' => 'Товар с данным ID не найден']);
     }
 
     function restore(Request $request)
@@ -112,7 +120,7 @@ class GoodsDataController extends Controller
             $model->restore();
             return self::success(Response::HTTP_OK);
         }
-        return self::bad_request('Товар с данным ID не найден');
+        return self::bad_request(['id' => 'Товар с данным ID не найден']);
     }
 
     function http_response($data, int $response_type)
@@ -132,7 +140,7 @@ class GoodsDataController extends Controller
     function bad_request($error)
     {
         return self::http_response(
-            ['status' => 'error', 'error' => ['id' => $error]],
+            ['status' => 'error', 'error' => $error],
             Response::HTTP_BAD_REQUEST);
     }
 }

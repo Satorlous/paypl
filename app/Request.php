@@ -28,6 +28,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Request extends Model
 {
+    const STATUS_PROCESSING = 100;
+    const STATUS_DECLINED = 101;
+    const STATUS_ACCEPTED = 102;
+
     protected $table = 'requests';
 
     protected $fillable = [
@@ -35,9 +39,9 @@ class Request extends Model
     ];
 
     public static $validate = [
-        'user_id'     => ['required', 'exists:App\User,id'],
-        'status_id'   => ['required', 'exists:App\Status,id'],
-        'content'     => ['required', 'string'],
+        'user_id' => ['required', 'exists:App\User,id'],
+        'status_id' => ['required', 'exists:App\Status,id'],
+        'content' => ['required', 'string'],
     ];
 
     public function status()
