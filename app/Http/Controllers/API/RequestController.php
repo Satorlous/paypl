@@ -41,7 +41,7 @@ class RequestController extends Controller
                 $model->status_id = \App\Request::STATUS_ACCEPTED;
                 $model->save();
 
-                $user = User::find(\auth('api')->user()->id);
+                $user = $model->user;
                 $user->role_id = Role::ROLE_SELLER;
                 $user->save();
             }

@@ -9,8 +9,6 @@ use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
-    //ToDo: категории возвращают лишнюю информацию: slug и parent_id, проблема в collections и objects при
-    //  при указании определенных полей
     public function getMap()
     {
         return

@@ -36,6 +36,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/orders/buyer', 'API\OrdersDataController@orderListByBuyer');
     Route::post('/orders/owner', 'API\OrdersDataController@orderListByGoodOwner');
     Route::post('/orders/store', 'API\OrdersDataController@store');
+    Route::post('/orders/update', 'API\OrdersDataController@update');
+    Route::post('/orders/destroy', 'API\OrdersDataController@destroy');
 
     Route::post('/request/get', 'API\RequestController@get');
     Route::post('/request/store', 'API\RequestController@store');
@@ -70,11 +72,11 @@ Route::get('/catalog/{slug}/{product}', 'API\CategoriesController@getBreadcrumbs
  */
 Route::post('/test', function () {
     $user = \auth('api')->user();
-    $count = Order::with('goods')->whereHas('goods', function ($good)
-    {
-        $good->where('slug', '=', 'product97');
-    })->where([
-        'user_id' => 41,
+    $count = Order::with('goods')->whereHas('goods',
+        function ($good) {
+            $good->where('slug', '=', 'product1');
+        })->where([
+        'user_id' => 26,
         'status_id' => Order::STATUS_DRAFT
     ])->count();
     dd($count);

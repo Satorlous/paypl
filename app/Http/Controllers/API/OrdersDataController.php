@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Order;
 use App\Status;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrdersDataController extends Controller
 {
@@ -14,13 +15,15 @@ class OrdersDataController extends Controller
     public function orderListByBuyer(Request $request)
     {
         $data = $request->json()->all();
+        $user = \auth('api')->user();
         $orders = Order::where(
             [
-                'user_id' => $data['user_id'],
+                'user_id' => $user->id,
                 'status_id' => $data['status_id'],
             ])
             ->with('goods')
-            ->get()->forPage($data['page'], $data['count']);
+            ->get();
+        $request['mode'] = $request['mode'] ?? 'new';
         switch ($request['mode']) {
             case "old":
                 return $orders->sortBy('updated_at')->values();
@@ -56,12 +59,63 @@ class OrdersDataController extends Controller
     public function store(Request $request)
     {
         $data = $request->json()->all();
-        $slug = $data['slug'];
-        $good = Good::whereSlug($slug)->first();
-        $tax = $good->category->tax;
-        $price = $good->price;
+        if(!$data['slug'])
+            return self::bad_request(['slug' => 'Поле slug обязательно']);
         $pay_login = \Config::get('constants.payment.login');
         $pay_pass  = \Config::get('constants.payment.pass');
+        $user = \auth('api')->user();
 
+        $good = Good::whereSlug($data['slug'])->first();
+        $order = Order::create([
+            'user_id' => $user->id,
+            'status_id' => Order::STATUS_DRAFT,
+            'token' => 'token'
+        ]);
+        $order->token = md5("$pay_login:$good->price:$order->id:$pay_pass");
+        $order->save();
+        $order->goods()->attach($good->id, [
+            'quantity' => 1,
+            'price_current' => $good->price,
+            'tax_current' => $good->category->tax
+        ]);
+        return self::success(Response::HTTP_OK);
+    }
+
+    public function update(Request $request)
+    {
+
+    }
+
+    public function destroy(Request $request)
+    {
+        $data = $request->json()->all();
+        if(!$data['id'])
+            return self::bad_request(['id' => 'Поле id обязательно']);
+        $model = Order::find($data['id']);
+        $ids = array_column($model->goods->all(), 'id');
+        $model->goods()->detach($ids);
+        $model->forceDelete();
+        return self::success(Response::HTTP_OK);
+    }
+
+    function http_response($data, int $response_type)
+    {
+        return \response()->json(
+            $data, $response_type,
+            ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    function success(int $response_type)
+    {
+        return self::http_response(['status' => 'success'], $response_type);
+    }
+
+    function bad_request($error)
+    {
+        return self::http_response(
+            ['status' => 'error', 'error' => $error],
+            Response::HTTP_BAD_REQUEST);
     }
 }

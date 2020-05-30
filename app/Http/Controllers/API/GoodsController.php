@@ -65,16 +65,6 @@ class GoodsController extends Controller
     public function goodsList(Request $request)
     {
         $aRequest = $request->json()->all();
-        //ToDo: переписать получение товаров в зависимости от идентификатора (это пока не важно)
-
-        /*ToDo: возвращается много ненужных данных
-            что точно не нужно - это id и внешние ключи
-            точно нужно - name, slug, price, discount, category_slug,
-            media_link - здесь только одна ссылка, и надо сделать проверку - если нет media у товара, чтобы мы отдавали какую-то картинку
-
-            ToDo как вариант можно просто в модели сделать массив, в котором перечислить какие поля можно возвращять,
-                но какой бы способ не выбрать, возникает пробелема с get
-        */
 
         switch ($aRequest['mode']) {
             case 'popular':
@@ -138,10 +128,9 @@ class GoodsController extends Controller
      */
     public function good(Request $request)
     {
-        $user = \auth('api')->user();
         $aRequest = $request->json()->all();
+        $user = \auth('api')->user();
         $slug = $aRequest['slug'];
-        //ToDo: тут тоже с полями. список тот же + media все, еще добавляется продавец от него нужен только login
         return Good::withTrashed()->get(
             [
                 'category_id',

@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $slug
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property boolean $is_unlimited
  * @property-read \App\Category $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Media[] $media
  * @property-read int|null $media_count
@@ -59,7 +60,7 @@ class Good extends Model
     protected $fillable = [
         'name', 'price', 'discount', 'user_id',
         'status_id', 'description', 'category_id',
-        'quantity',
+        'quantity', 'is_unlimited'
     ];
 
     public static $validate = [
@@ -75,7 +76,7 @@ class Good extends Model
         'price'         => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
         'discount'      => ['regex:/^\d+(\.\d{1,2})?$/'],
         'user_id'       => ['required', 'exists:App\User,id'],
-        'status_id'       => ['required', 'exists:App\Status,id'],
+        'status_id'     => ['required', 'exists:App\Status,id'],
         'quantity'      => ['nullable', 'integer', 'min:1'],
         'description'   => ['string'],
         'category_id'   => ['required', 'exists:App\Category,id'],
