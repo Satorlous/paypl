@@ -176,20 +176,20 @@ class User extends Authenticatable
      * @return bool
      */
     public function isSeller() {
-        return $this->role->id == Role::ROLE_SELLER;
+        return $this->role->id === Role::ROLE_SELLER;
     }
 
     public  function isAdmin() {
-        return $this->role->id == Role::ROLE_ADMIN;
+        return $this->role->id === Role::ROLE_ADMIN;
     }
 
     public function getDataForFrontend()
     {
         return [
-            'id' => $this->id,
-            'name'   => $this->name,
-            'avatar' => $this->avatar,
-            'seller' => $this->isSeller(),
+            'id'        => $this->id,
+            'name'      => $this->name,
+            'avatar'    => $this->avatar,
+            'seller'    => $this->isSeller(),
             'is_admin'  => $this->isAdmin()
         ];
     }

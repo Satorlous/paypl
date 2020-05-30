@@ -38,10 +38,10 @@ class Order extends Model
 {
     use SoftDeletes;
 
-    const ORDER_DRAFT = '10';
-    const ORDER_CANCELLED = '11';
-    const ORDER_PAID = '12';
-    const ORDER_FINISHED = '13';
+    const STATUS_DRAFT = '10';
+    const STATUS_CANCELLED = '11';
+    const STATUS_PAID = '12';
+    const STATUS_FINISHED = '13';
 
     protected $table = 'orders';
 

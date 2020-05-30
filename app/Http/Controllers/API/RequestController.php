@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RequestController extends Controller
 {
+    public function get()
+    {
+        return \App\Request::whereStatusId(\App\Request::STATUS_PROCESSING)->get();
+    }
+
     public function store(Request $request)
     {
         $data = $request->json()->all();
@@ -38,7 +43,7 @@ class RequestController extends Controller
                 $model->save();
 
                 $user = User::find(\auth('api')->user()->id);
-                $user->role_id = Role::ROLE_BUYER;
+                $user->role_id = Role::ROLE_SELLER;
                 $user->save();
             }
             else {

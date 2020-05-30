@@ -20,6 +20,24 @@ Route::post('/profile/register', 'API\AuthController@register');
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/profile/detail', 'API\AuthController@get_users_details_info');
+    /*
+     * CRUD
+     */
+    Route::post('/goods/store', 'API\GoodsDataController@store');
+    Route::post('/goods/update', 'API\GoodsDataController@update');
+    Route::post('/goods/destroy', 'API\GoodsDataController@destroy');
+    Route::post('/goods/restore', 'API\GoodsDataController@restore');
+
+    Route::post('/users/update', 'API\UsersDataController@update');
+    Route::post('/users/destroy', 'API\UsersDataController@destroy');
+    Route::post('/users/restore', 'API\UsersDataController@restore');
+
+    Route::post('/orders/buyer', 'API\OrdersDataController@orderListByBuyer');
+    Route::post('/orders/owner', 'API\OrdersDataController@orderListByGoodOwner');
+
+    Route::post('/request/get', 'API\RequestController@get');
+    Route::post('/request/store', 'API\RequestController@store');
+    Route::post('/request/update', 'API\RequestController@update');
 });
 
 /*
@@ -51,17 +69,4 @@ Route::get('/catalog/{slug}/{product}', 'API\CategoriesController@getBreadcrumbs
 Route::post('/test', function () {
 
 });
-Route::post('/goods/store', 'API\GoodsDataController@store');
-Route::post('/goods/update', 'API\GoodsDataController@update');
-Route::post('/goods/destroy', 'API\GoodsDataController@destroy');
-Route::post('/goods/restore', 'API\GoodsDataController@restore');
 
-Route::post('/users/update', 'API\UsersDataController@update');
-Route::post('/users/destroy', 'API\UsersDataController@destroy');
-Route::post('/users/restore', 'API\UsersDataController@restore');
-
-Route::post('/orders/buyer', 'API\OrdersDataController@orderListByBuyer');
-Route::post('/orders/owner', 'API\OrdersDataController@orderListByGoodOwner');
-
-Route::post('/request/store', 'API\RequestController@store');
-Route::post('/request/update', 'API\RequestController@update');

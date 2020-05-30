@@ -53,5 +53,8 @@ class OrdersDataController extends Controller
         return $orders;
     }
 
+    public function store(Request $request)
+    {
 
+    }
 }
