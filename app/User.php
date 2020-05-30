@@ -179,6 +179,10 @@ class User extends Authenticatable
         return $this->role->id == Role::ROLE_SELLER;
     }
 
+    public  function isAdmin() {
+        return $this->role->id == Role::ROLE_ADMIN;
+    }
+
     public function getDataForFrontend()
     {
         return [
@@ -186,6 +190,7 @@ class User extends Authenticatable
             'name'   => $this->name,
             'avatar' => $this->avatar,
             'seller' => $this->isSeller(),
+            'is_admin'  => $this->isAdmin()
         ];
     }
 }
