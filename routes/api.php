@@ -72,13 +72,25 @@ Route::get('/catalog/{slug}/{product}', 'API\CategoriesController@getBreadcrumbs
  */
 Route::post('/test', function () {
     $user = \auth('api')->user();
-    $count = Order::with('goods')->whereHas('goods',
-        function ($good) {
-            $good->where('slug', '=', 'product1');
-        })->where([
-        'user_id' => 26,
-        'status_id' => Order::STATUS_DRAFT
-    ])->count();
-    dd($count);
+    $good = \App\Good::whereSlug('product1');
+    $orders = Order::where('status_id', Order::STATUS_DRAFT)
+        ->whereHas('goods',
+            function ($good1) {
+                $good1->where('slug', '=', 'product1');
+            }
+        )
+        ->each(function ($order) use ($good) {
+            $order->goods()->updateExistingPivot($good->id,
+                [
+                    'price_current' => $good->price,
+                    'tax_current' => $good->category->tax
+                ]
+            );
+        });
+});
+
+Route::post('/test1', function () {
+    $good = \App\Order::with('goods')->where('id', 1)->get()->toArray();
+    dd($good);
 });
 

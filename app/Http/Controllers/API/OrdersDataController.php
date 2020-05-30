@@ -21,7 +21,9 @@ class OrdersDataController extends Controller
                 'user_id' => $user->id,
                 'status_id' => $data['status_id'],
             ])
-            ->with('goods')
+            ->with(['goods' => function ($good) {
+                $good->with('category');
+            }])
             ->get();
         $request['mode'] = $request['mode'] ?? 'new';
         switch ($request['mode']) {
@@ -59,19 +61,18 @@ class OrdersDataController extends Controller
     public function store(Request $request)
     {
         $data = $request->json()->all();
-        if(!$data['slug'])
+        if (!$data['slug'])
             return self::bad_request(['slug' => 'Поле slug обязательно']);
-        $pay_login = \Config::get('constants.payment.login');
-        $pay_pass  = \Config::get('constants.payment.pass');
-        $user = \auth('api')->user();
 
+        $user = \auth('api')->user();
         $good = Good::whereSlug($data['slug'])->first();
         $order = Order::create([
             'user_id' => $user->id,
             'status_id' => Order::STATUS_DRAFT,
             'token' => 'token'
         ]);
-        $order->token = md5("$pay_login:$good->price:$order->id:$pay_pass");
+
+        $order->token = $order->get_checksum($good->final_price());
         $order->save();
         $order->goods()->attach($good->id, [
             'quantity' => 1,
@@ -89,7 +90,7 @@ class OrdersDataController extends Controller
     public function destroy(Request $request)
     {
         $data = $request->json()->all();
-        if(!$data['id'])
+        if (!$data['id'])
             return self::bad_request(['id' => 'Поле id обязательно']);
         $model = Order::find($data['id']);
         $ids = array_column($model->goods->all(), 'id');

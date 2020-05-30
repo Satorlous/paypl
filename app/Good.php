@@ -82,6 +82,12 @@ class Good extends Model
         'category_id'   => ['required', 'exists:App\Category,id'],
     ];
 
+    public function final_price()
+    {
+        $price = $this->discount > 0 ? $this->discount : $this->price;
+        return $price * (1-$this->category->tax);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

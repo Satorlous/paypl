@@ -42,7 +42,6 @@ class Order extends Model
     const STATUS_CANCELLED = '11';
     const STATUS_PAID = '12';
     const STATUS_FINISHED = '13';
-
     protected $table = 'orders';
 
     protected $fillable = [
@@ -54,6 +53,13 @@ class Order extends Model
         'status_id'   => ['required', 'exists:App\Status,id'],
         'token'       => ['required', 'string'],
     ];
+
+    public function get_checksum($price)
+    {
+        $pay_login = \Config::get('constants.payment.login');
+        $pay_pass  = \Config::get('constants.payment.pass');
+        return md5("$pay_login:$price:$this->id:$pay_pass");
+    }
 
     public function user()
     {
