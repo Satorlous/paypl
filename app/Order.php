@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use function Clue\StreamFilter\fun;
 
 /**
  * App\Order
@@ -54,12 +55,33 @@ class Order extends Model
         'token'       => ['required', 'string'],
     ];
 
+    public function get_payment_login()
+    {
+        return \Config::get('constants.payment.login');
+    }
+
+    public function get_payment_pass()
+    {
+        return \Config::get('constants.payment.pass');
+    }
+
     public function get_checksum($price)
     {
-        $pay_login = \Config::get('constants.payment.login');
-        $pay_pass  = \Config::get('constants.payment.pass');
+        $pay_login = self::get_payment_login();
+        $pay_pass = self::get_payment_pass();
         return md5("$pay_login:$price:$this->id:$pay_pass");
     }
+
+    public function get_payment_url($price)
+    {
+        $pay_login = self::get_payment_login();
+        $sv = self::get_checksum($price);
+        $desc = "Заказ №$this->id";
+        return "https://auth.robokassa.ru/Merchant/Index.aspx?".
+            "MerchantLogin=$pay_login&OutSum=$price&InvoiceID=$this->id".
+            "&Description=$desc&SignatureValue=$sv&IsTest=1";
+    }
+
 
     public function user()
     {

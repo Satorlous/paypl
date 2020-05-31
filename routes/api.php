@@ -38,6 +38,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/orders/store', 'API\OrdersDataController@store');
     Route::post('/orders/update', 'API\OrdersDataController@update');
     Route::post('/orders/destroy', 'API\OrdersDataController@destroy');
+    Route::post('/orders/payment', 'API\OrdersDataController@payment');
+    Route::post('/orders/retry_payment', 'API\OrdersDataController@retry_payment');
 
     Route::post('/request/get', 'API\RequestController@get');
     Route::post('/request/store', 'API\RequestController@store');

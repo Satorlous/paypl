@@ -99,6 +99,35 @@ class OrdersDataController extends Controller
         return self::success(Response::HTTP_OK);
     }
 
+    public function payment(Request $request)
+    {
+        $data = $request->json()->all();
+        $goods_in_order = $data['goods'];
+        $final_price = 0;
+        foreach ($goods_in_order as $good)
+        {
+            $model = Good::find($good['id']);
+            $q = $good['pivot']['quantity'];
+            $final_price += $model->price * $q;
+            $model->orders()->updateExistingPivot($data['id'],
+                ['quantity' => $q]);
+        }
+        $order = Order::find($data['id']);
+        return $order->get_payment_url($final_price);
+    }
+
+    public function retry_payment(Request $request)
+    {
+        $data = $request->json()->all();
+        $order = Order::find($data['id']);
+        $final_price = 0;
+        foreach ($order->goods as $good)
+        {
+            $final_price += $good->price * $good->pivot->quantity;
+        };
+        return $order->get_payment_url($final_price);
+    }
+
     function http_response($data, int $response_type)
     {
         return \response()->json(

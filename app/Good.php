@@ -84,8 +84,7 @@ class Good extends Model
 
     public function final_price()
     {
-        $price = $this->discount > 0 ? $this->discount : $this->price;
-        return $price * (1-$this->category->tax);
+        return $this->discount > 0 ? $this->discount : $this->price;
     }
 
     public function user()
