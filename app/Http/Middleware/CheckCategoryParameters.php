@@ -23,7 +23,7 @@ class CheckCategoryParameters
                 $validator = Validator::make($request->json()->all(), [
                     "page"  => ["required","integer"],
                     "count" => ["required","integer"],
-                    "category"  => ["string","exists:categories,slug"],
+                    "category"  => ["string","nullable","exists:categories,slug"],
                 ]);
                 break;
             default: break;
