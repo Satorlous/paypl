@@ -101,7 +101,7 @@ class OrdersDataController extends Controller
 
     public function payment(Request $request)
     {
-        $data = $request->json()->all();
+        $data = $request->json()->all()['order'];
         $goods_in_order = $data['goods'];
         $final_price = 0;
         foreach ($goods_in_order as $good)
@@ -113,7 +113,7 @@ class OrdersDataController extends Controller
                 ['quantity' => $q]);
         }
         $order = Order::find($data['id']);
-        return $order->get_payment_url($final_price);
+        return ['url' => $order->get_payment_url($final_price)];
     }
 
     public function retry_payment(Request $request)
