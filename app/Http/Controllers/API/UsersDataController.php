@@ -17,13 +17,13 @@ class UsersDataController extends Controller
     public function update(Request $request)
     {
         $data = $request->all();
-        if ($model = User::withTrashed()->get()->where('id', $data['id'])->first()) {
-            $model->fill($data);
-
-            $validator = Validator::make($data, User::$validate_update);
-            if ($validator->fails())
-                return self::bad_request($validator->errors());
-            $model->save();
+        if(key_exists('id',$data)) {
+            $model = User::withTrashed()->get()->where('id', $data['id'])->first();
+        } elseif ($user = \auth('api')->user()) {
+            $model = $user->getModel();
+        }
+        if($model)
+        {
             //Files
             $path_directory = '/images/avatars/';
             if (!empty($data['avatar']) && $request->hasfile('avatar')) {
@@ -31,11 +31,18 @@ class UsersDataController extends Controller
                     mkdir(public_path() . $path_directory);
                 $file = $request->file('avatar');
                 $extension = $file->getClientOriginalExtension(); // getting image extension
-                $filename = time() . '.' . $extension;
+                $filename =time().'.'.$extension;
                 $file->move(public_path() . $path_directory, $filename);
-                $data['avatar'] = asset($path_directory . $filename);
+                $data['avatar'] = asset($path_directory. $filename);
             }
-            return self::success();
+
+            $model->fill($data);
+
+            $validator = Validator::make($data, User::$validate_update);
+            if ($validator->fails())
+                return self::bad_request($validator->errors());
+            $model->save();
+            return self::success($data);
         }
         return self::bad_request('Пользователь с данным ID не найден');
     }
@@ -100,15 +107,15 @@ class UsersDataController extends Controller
         );
     }
 
-    function success()
+    function success($data = [])
     {
-        return self::http_response(['status' => 'success'], Response::HTTP_OK);
+        return self::http_response(['status' => 'success','data' => $data], Response::HTTP_OK);
     }
 
     function bad_request($error)
     {
         return self::http_response(
-            ['status' => 'error', 'error' => ['id' => $error]],
+            ['status' => 'error', 'error' => $error],
             Response::HTTP_BAD_REQUEST);
     }
 }
