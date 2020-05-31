@@ -87,7 +87,7 @@ class GoodsDataController extends Controller
                     $filename = time(). $i.'.'.$extension;
                     $file->move(public_path() . $path_directory, $filename);
                     $full_file_path = asset($path_directory.$filename);
-                    $media = Media::create(
+                    Media::create(
                         [
                             'good_id' => $model->id,
                             'link' => $full_file_path,

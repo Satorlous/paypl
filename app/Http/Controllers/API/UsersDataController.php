@@ -84,6 +84,7 @@ class UsersDataController extends Controller
                 });
             $i++;
         }
+
         $output = [];
         foreach ($orders as $order) {
             $date = Carbon::parse($order['updated_at'])->format('d.m.Y');
@@ -95,7 +96,7 @@ class UsersDataController extends Controller
             else
                 $output[$date] = round($cash, 2);
         }
-        return $output;
+        return ['data' => $output];
     }
 
     function http_response($data, int $response_type)
