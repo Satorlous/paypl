@@ -25,7 +25,7 @@ class RequestController extends Controller
         if ($validator->fails())
             return self::bad_request($validator->errors());
 
-        if (\App\Request::whereUserId($data['user_id'])->count()) {
+        if (\App\Request::where(['user_id' => $data['user_id'], 'status_id' => \App\Request::STATUS_PROCESSING])->count()) {
             return self::http_response(['status' => 'error', 'error' => 'Заявка уже подана'], Response::HTTP_OK);
         }
         \App\Request::create($data);

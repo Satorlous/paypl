@@ -84,7 +84,52 @@ class OrdersDataController extends Controller
 
     public function update(Request $request)
     {
+        $data = $request->json()->all();
+        $status_id = $data['status_id'];
+        $order = Order::find($data['id']);
+        $goods = $order->goods;
+        $order->status_id = $data['status_id'];
 
+        if ($status_id == Order::STATUS_PAID)
+        {
+            foreach ($goods as $good)
+            {
+                if (!$good->is_unlimited)
+                {
+                    $good->quantity -= $good->pivot->quantity;
+                    $good->save();
+                }
+                $good->user->balance += $good->pivot->price_current * $good->pivot->quantity;
+                $good->user->save();
+            }
+        }
+
+        if ($status_id == Order::STATUS_FINISHED)
+        {
+            foreach ($goods as $good)
+            {
+                $diff = $good->pivot->price_current * $good->pivot->quantity;
+                $good->user->balance -= $diff;
+                $good->user->withdraw_balance += $diff;
+                $good->user->save();
+            }
+        }
+
+        if ($status_id == Order::STATUS_CANCELLED)
+        {
+            foreach ($goods as $good)
+            {
+                if (!$good->is_unlimited)
+                {
+                    $good->quantity += $good->pivot->quantity;
+                    $good->save();
+                }
+                $diff = $good->pivot->price_current * $good->pivot->quantity;
+                $good->user->balance -= $diff;
+                $good->user->withdraw_balance += $diff;
+                $good->user->save();
+            }
+        }
     }
 
     public function destroy(Request $request)
@@ -104,8 +149,7 @@ class OrdersDataController extends Controller
         $data = $request->json()->all()['order'];
         $goods_in_order = $data['goods'];
         $final_price = 0;
-        foreach ($goods_in_order as $good)
-        {
+        foreach ($goods_in_order as $good) {
             $model = Good::find($good['id']);
             $q = $good['pivot']['quantity'];
             $final_price += $model->price * $q;
@@ -121,8 +165,7 @@ class OrdersDataController extends Controller
         $data = $request->json()->all();
         $order = Order::find($data['id']);
         $final_price = 0;
-        foreach ($order->goods as $good)
-        {
+        foreach ($order->goods as $good) {
             $final_price += $good->price * $good->pivot->quantity;
         };
         return $order->get_payment_url($final_price);

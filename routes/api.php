@@ -32,6 +32,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/users/update', 'API\UsersDataController@update');
     Route::post('/users/destroy', 'API\UsersDataController@destroy');
     Route::post('/users/restore', 'API\UsersDataController@restore');
+    Route::post('/users/chart', 'API\UsersDataController@profit_chart');
 
     Route::post('/orders/buyer', 'API\OrdersDataController@orderListByBuyer');
     Route::post('/orders/owner', 'API\OrdersDataController@orderListByGoodOwner');

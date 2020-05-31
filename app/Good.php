@@ -55,6 +55,10 @@ class Good extends Model
 {
     use SoftDeletes;
 
+    const STATUS_ONSALE = 1;
+    const STATUS_PAUSED = 2;
+    const STATUS_SOLD = 3;
+
     protected $table = 'goods';
 
     protected $fillable = [

@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class GoodObserver
 {
     /**
-     * Handle the good "created" event.
+     * Handle the good "creating" event.
      *
      * @param \App\Good $good
      * @return void
@@ -22,6 +22,22 @@ class GoodObserver
         if ($good->quantity)
             $good->is_unlimited = false;
     }
+
+
+    /**
+     * Handle the good "updating" event.
+     *
+     * @param \App\Good $good
+     * @return void
+     */
+    public function updating(Good $good)
+    {
+        if (!$good->is_unlimited && $good->quantity == 0)
+        {
+            $good->status_id = Good::STATUS_SOLD;
+        }
+    }
+
 
     /**
      * Handle the good "updated" event.
