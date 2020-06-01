@@ -16,17 +16,17 @@ class OrdersDataController extends Controller
     {
         $data = $request->json()->all();
         $user = \auth('api')->user();
-        $orders = Order::where(
+        $data['status_id'] = is_array($data['status_id']) ? $data['status_id'] : [$data['status_id']];
+        $orders = Order::whereIn('status_id', $data['status_id'])->where(
             [
                 'user_id' => $user->id,
-                'status_id' => $data['status_id'],
             ])
             ->with(['goods' => function ($good) {
                 $good->with('category');
-            }])
+            },'status'])
             ->get();
-        $request['mode'] = $request['mode'] ?? 'new';
-        switch ($request['mode']) {
+        $data['mode'] = $data['mode'] ?? 'new';
+        switch ($data['mode']) {
             case "old":
                 return $orders->sortBy('updated_at')->values();
                 break;
