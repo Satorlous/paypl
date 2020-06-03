@@ -104,13 +104,14 @@ class GoodsDataController extends Controller
     function destroy(Request $request)
     {
         $data = $request->json()->all();
-        if($model = Good::withTrashed()->get()->where('id', $data['id'])->first())
+        if($model = Good::whereId($data['id'])->first())
         {
             $model->delete();
             return self::success(Response::HTTP_OK);
         }
         return self::bad_request(['id' => 'Товар с данным ID не найден']);
     }
+
 
     function restore(Request $request)
     {

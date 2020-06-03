@@ -76,7 +76,7 @@ class OrdersDataController extends Controller
         $order->save();
         $order->goods()->attach($good->id, [
             'quantity' => 1,
-            'price_current' => $good->price,
+            'price_current' => $good->final_price(),
             'tax_current' => $good->category->tax
         ]);
         return self::success(Response::HTTP_OK);
@@ -162,7 +162,7 @@ class OrdersDataController extends Controller
         foreach ($goods_in_order as $good) {
             $model = Good::find($good['id']);
             $q = $good['pivot']['quantity'];
-            $final_price += $model->price * $q;
+            $final_price += $model->final_price() * $q;
             $model->orders()->updateExistingPivot($data['id'],
                 ['quantity' => $q]);
         }
@@ -176,7 +176,7 @@ class OrdersDataController extends Controller
         $order = Order::find($data['id']);
         $final_price = 0;
         foreach ($order->goods as $good) {
-            $final_price += $good->price * $good->pivot->quantity;
+            $final_price += $good->final_price() * $good->pivot->quantity;
         };
         return $order->get_payment_url($final_price);
     }

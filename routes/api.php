@@ -1,5 +1,6 @@
 <?php
 
+use App\Good;
 use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -75,26 +76,8 @@ Route::get('/catalog/{slug}/{product}', 'API\CategoriesController@getBreadcrumbs
  * CRUD
  */
 Route::post('/test', function () {
-    $user = \auth('api')->user();
-    $good = \App\Good::whereSlug('product1');
-    $orders = Order::where('status_id', Order::STATUS_DRAFT)
-        ->whereHas('goods',
-            function ($good1) {
-                $good1->where('slug', '=', 'product1');
-            }
-        )
-        ->each(function ($order) use ($good) {
-            $order->goods()->updateExistingPivot($good->id,
-                [
-                    'price_current' => $good->price,
-                    'tax_current' => $good->category->tax
-                ]
-            );
-        });
+    $model = Good::whereId(2)->first();
+    dd($model);
 });
 
-Route::post('/test1', function () {
-    $good = \App\Order::with('goods')->where('id', 1)->get()->toArray();
-    dd($good);
-});
 
