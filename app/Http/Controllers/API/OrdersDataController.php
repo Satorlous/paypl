@@ -86,51 +86,38 @@ class OrdersDataController extends Controller
     {
         $data = $request->json()->all();
         $status_id = $data['status_id'];
-
-        if ($status_id == Order::STATUS_PAID)
-        {
-            $id = Order::check_checksum($data['sum'],$data['key']);
-            if ($id > 0) {
-                $order = Order::find($id);
-                $goods = $order->goods;
-                $order->status_id = $data['status_id'];
-                foreach ($goods as $good)
-                {
-                    if (!$good->is_unlimited)
-                    {
-                        $good->quantity -= $good->pivot->quantity;
-                        $good->save();
-                    }
-                    $good->user->balance += $good->pivot->price_current * $good->pivot->quantity;
-                    $good->user->save();
-                }
-                return self::success(Response::HTTP_OK);
-            } else {
-                return self::bad_request(['Не удалось подтвердить действительность платежа. Свяжитесь со службой поддержки']);
-            }
-        }
-
         $order = Order::find($data['id']);
+        if (!$order) {
+            return self::bad_request(['Не удалось обновить статус заказа']);
+        }
         $goods = $order->goods;
         $order->status_id = $data['status_id'];
 
-        if ($status_id == Order::STATUS_FINISHED)
-        {
-            foreach ($goods as $good)
-            {
+        if ($status_id == Order::STATUS_PAID) {
+            foreach ($goods as $good) {
+                if (!$good->is_unlimited) {
+                    $good->quantity -= $good->pivot->quantity;
+                    $good->save();
+                }
+                $good->user->balance += $good->pivot->price_current * $good->pivot->quantity;
+                $good->user->save();
+            }
+            return self::success(Response::HTTP_OK);
+        }
+
+        if ($status_id == Order::STATUS_FINISHED) {
+            foreach ($goods as $good) {
                 $diff = $good->pivot->price_current * $good->pivot->quantity;
                 $good->user->balance -= $diff;
                 $good->user->withdraw_balance += $diff;
                 $good->user->save();
             }
+            return self::success(Response::HTTP_OK);
         }
 
-        if ($status_id == Order::STATUS_CANCELLED)
-        {
-            foreach ($goods as $good)
-            {
-                if (!$good->is_unlimited)
-                {
+        if ($status_id == Order::STATUS_CANCELLED) {
+            foreach ($goods as $good) {
+                if (!$good->is_unlimited) {
                     $good->quantity += $good->pivot->quantity;
                     $good->save();
                 }
@@ -139,7 +126,9 @@ class OrdersDataController extends Controller
                 $good->user->withdraw_balance += $diff;
                 $good->user->save();
             }
+            return self::success(Response::HTTP_OK);
         }
+        return self::bad_request(['Не удалось обновить статус заказа']);
     }
 
     public function destroy(Request $request)
@@ -163,7 +152,8 @@ class OrdersDataController extends Controller
             $model = Good::find($good['id']);
             $q = $good['pivot']['quantity'];
             $final_price += $model->price * $q;
-            $model->orders()->updateExistingPivot($data['id'],
+            $model->orders()->updateExistingPivot(
+                $data['id'],
                 ['quantity' => $q]);
         }
         $order = Order::find($data['id']);
@@ -178,7 +168,7 @@ class OrdersDataController extends Controller
         foreach ($order->goods as $good) {
             $final_price += $good->price * $good->pivot->quantity;
         };
-        return $order->get_payment_url($final_price);
+        return ['url' => $order->get_payment_url($final_price)];
     }
 
     function http_response($data, int $response_type)
