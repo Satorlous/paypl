@@ -114,3 +114,5 @@ fabric.properties
 /public/images/avatars/
 /public/images/media/
 /log
+public_html
+/public_html
