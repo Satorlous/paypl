@@ -123,6 +123,14 @@ class GoodsDataController extends Controller
         return self::bad_request(['id' => 'Товар с данным ID не найден']);
     }
 
+    function goodsListByOwner(Request $request)
+    {
+        $data = $request->json()->all();
+        $good_owner_id = $data['user_id'];
+        $orders = Good::with(['status','category'])->where('user_id','=',$good_owner_id)->get();
+        return $orders;
+    }
+
     function http_response($data, int $response_type)
     {
         return \response()->json(

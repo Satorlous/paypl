@@ -97,7 +97,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $response = Response::HTTP_OK;
-        return $user ? $this->get_http_response($response,"success", $user)
+        return $user ? $this->get_http_response($response,"success", $user->with('role')->whereId($user->id)->first())
             : $this->get_http_response($response,"unauthenticated user", $user);
     }
 
