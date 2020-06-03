@@ -86,23 +86,33 @@ class OrdersDataController extends Controller
     {
         $data = $request->json()->all();
         $status_id = $data['status_id'];
-        $order = Order::find($data['id']);
-        $goods = $order->goods;
-        $order->status_id = $data['status_id'];
 
         if ($status_id == Order::STATUS_PAID)
         {
-            foreach ($goods as $good)
-            {
-                if (!$good->is_unlimited)
+            $id = Order::check_checksum($data['sum'],$data['key']);
+            if ($id > 0) {
+                $order = Order::find($id);
+                $goods = $order->goods;
+                $order->status_id = $data['status_id'];
+                foreach ($goods as $good)
                 {
-                    $good->quantity -= $good->pivot->quantity;
-                    $good->save();
+                    if (!$good->is_unlimited)
+                    {
+                        $good->quantity -= $good->pivot->quantity;
+                        $good->save();
+                    }
+                    $good->user->balance += $good->pivot->price_current * $good->pivot->quantity;
+                    $good->user->save();
                 }
-                $good->user->balance += $good->pivot->price_current * $good->pivot->quantity;
-                $good->user->save();
+                return self::success(Response::HTTP_OK);
+            } else {
+                return self::bad_request(['Не удалось подтвердить действительность платежа. Свяжитесь со службой поддержки']);
             }
         }
+
+        $order = Order::find($data['id']);
+        $goods = $order->goods;
+        $order->status_id = $data['status_id'];
 
         if ($status_id == Order::STATUS_FINISHED)
         {

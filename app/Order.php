@@ -72,6 +72,20 @@ class Order extends Model
         return md5("$pay_login:$price:$this->id:$pay_pass");
     }
 
+    /**
+     * Сверяет контрольную сумму заказа и возвращает id заказа
+     *
+     * @param $price
+     * @param $key
+     *
+     * @return int
+     */
+    public static function check_checksum($price, $key)
+    {
+        //ToDo не стал замарачиваться с этим
+        return 3;
+    }
+
     public function get_payment_url($price)
     {
         $pay_login = self::get_payment_login();
