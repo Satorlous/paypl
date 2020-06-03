@@ -102,7 +102,7 @@ class DatabaseSeeder extends Seeder
                                 $goods[] = [
                                     'good_id' => $good['id'],
                                     'quantity' => rand(1, $good->quantity),
-                                    'price_current' => $good->price,
+                                    'price_current' => $good->final_price(),
                                     'tax_current' => $good->category['tax'],
                                 ];
                             }

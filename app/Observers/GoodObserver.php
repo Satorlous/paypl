@@ -58,10 +58,11 @@ class GoodObserver
                     }
                 )
                 ->each(function (Order $order) use ($model) {
-                    $order->update(['token' => $order->get_checksum($model->price)]);
+                    $price = $model->final_price();
+                    $order->update(['token' => $order->get_checksum($price)]);
                     $order->goods()->updateExistingPivot($model->id,
                         [
-                            'price_current' => $model->price,
+                            'price_current' => $price,
                             'tax_current' => $model->category->tax
                         ]
                     );
