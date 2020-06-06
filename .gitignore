@@ -112,3 +112,7 @@ fabric.properties
 # End of https://www.gitignore.io/api/phpstorm
 /public/uploads/
 /public/images/avatars/
+/public/images/media/
+/log
+public_html
+/public_html

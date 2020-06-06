@@ -52,13 +52,11 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-
         $data = $request->all();
         if (empty($data['login'])) {
             $data['login'] = User::getUniqueToken();
         }
         $validator = Validator::make($data, User::$validate);
-
         if ($validator->fails()) {
             return \response()->json(['status' => 'error', 'error' => $validator->errors()]);
         }
@@ -99,7 +97,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $response = Response::HTTP_OK;
-        return $user ? $this->get_http_response($response,"success", $user)
+        return $user ? $this->get_http_response($response,"success", $user->with('role')->whereId($user->id)->first())
             : $this->get_http_response($response,"unauthenticated user", $user);
     }
 

@@ -80,7 +80,6 @@ class DatabaseSeeder extends Seeder
                          */
                         factory(Media::class, rand(3, 40))->create(['good_id' => $good->id]);
                     });
-                factory(Request::class, rand(0, 2))->create(['user_id' => $user->id]);
             }
         );
 
@@ -95,15 +94,15 @@ class DatabaseSeeder extends Seeder
                 $user->orders()->saveMany(
                     factory(Order::class, rand(1, 5))->create(
                         [
-                            'user_id' => $user->id, 'status_id' => 3,
+                            'user_id' => $user->id, 'status_id' => rand(10,13),
                         ]
                     )->each(function ($order) {
                             $goods = [];
-                            foreach (Good::all()->random(rand(1, 4)) as $good) {
+                            foreach (Good::all()->random(1) as $good) {
                                 $goods[] = [
                                     'good_id' => $good['id'],
                                     'quantity' => rand(1, $good->quantity),
-                                    'price_current' => $good->price,
+                                    'price_current' => $good->final_price(),
                                     'tax_current' => $good->category['tax'],
                                 ];
                             }
@@ -111,6 +110,10 @@ class DatabaseSeeder extends Seeder
                         }
                     )
                 );
+                /**
+                 * Seeding 0-1 request for each existing buyer
+                 */
+                factory(Request::class, rand(0,1))->create(['user_id' => $user->id]);
             }
         );
         /**

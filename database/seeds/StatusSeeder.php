@@ -47,6 +47,13 @@ class StatusSeeder extends Seeder
             ],
             [
                 'id'      => 12,
+                'name'    => 'Заказ оплачен',
+                'type'    => Status::TYPE_ORDER,
+                'locked'  => true,
+            ],
+
+            [
+                'id'      => 13,
                 'name'    => 'Сделка завершена',
                 'type'    => Status::TYPE_ORDER,
                 'locked'  => true,
@@ -54,30 +61,18 @@ class StatusSeeder extends Seeder
 
             [
                 'id'      => 100,
-                'name'    => 'Черновик',
-                'type'    => Status::TYPE_REQUEST,
-                'locked'  => false,
-            ],
-            [
-                'id'      => 101,
-                'name'    => 'Обращение подано',
-                'type'    => Status::TYPE_REQUEST,
-                'locked'  => true,
-            ],
-            [
-                'id'      => 102,
                 'name'    => 'Обращение находится в обработке',
                 'type'    => Status::TYPE_REQUEST,
                 'locked'  => true,
             ],
             [
-                'id'      => 103,
+                'id'      => 101,
                 'name'    => 'Отказ',
                 'type'    => Status::TYPE_REQUEST,
                 'locked'  => true,
             ],
             [
-                'id'      => 104,
+                'id'      => 102,
                 'name'    => 'Успех',
                 'type'    => Status::TYPE_REQUEST,
                 'locked'  => true,

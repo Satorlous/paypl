@@ -4,6 +4,24 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\ContactService
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $link
+ * @property string $icon
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ContactService newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ContactService newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ContactService query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ContactService whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ContactService whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ContactService whereLink($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ContactService whereName($value)
+ * @mixin \Eloquent
+ */
 class ContactService extends Model
 {
     protected $table = 'contact_services';

@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Good;
+use App\Observers\GoodObserver;
+use App\Observers\UserObserver;
+use App\User;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Good::observe(GoodObserver::class);
+        User::observe(UserObserver::class);
     }
 }
