@@ -72,12 +72,3 @@ Route::get('/catalog/{slug}', 'API\CategoriesController@getBreadcrumbs');
 Route::get('/catalog', 'API\CategoriesController@getBreadcrumbs');
 Route::get('/catalog/{slug}/{product}', 'API\CategoriesController@getBreadcrumbs');
 
-/*
- * CRUD
- */
-Route::post('/test', function () {
-    $model = Good::whereId(2)->first();
-    dd($model);
-});
-
-
