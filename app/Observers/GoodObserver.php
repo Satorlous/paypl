@@ -16,7 +16,7 @@ class GoodObserver
      */
     public function creating(Good $good)
     {
-        $i = Good::max('id') + 1;
+        $i = Good::withTrashed()->max('id') + 1;
         $good->slug = 'product' . $i;
         $good->status_id = 1;
         if ($good->quantity)

@@ -68,7 +68,7 @@ class GoodsController extends Controller
 
         switch ($aRequest['mode']) {
             case 'popular':
-                return Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                return Good::all()->skip(0)->forPage($aRequest['page'], $aRequest['count'])
                     ->values()->each(
                         function ($good) {
                             if (count($good->media) > 0) {
@@ -80,7 +80,7 @@ class GoodsController extends Controller
                         });
                 break;
             case 'novelty':
-                return Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                return Good::all()->skip(6)->forPage($aRequest['page'], $aRequest['count'])
                     ->values()->each(
                         function ($good) {
                             if (count($good->media) > 0) {
@@ -92,7 +92,7 @@ class GoodsController extends Controller
                         });
                 break;
             case 'sale':
-                return Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                return Good::all()->skip(12)->forPage($aRequest['page'], $aRequest['count'])
                     ->values()->each(
                         function ($good) {
                             if (count($good->media) > 0) {
@@ -104,7 +104,7 @@ class GoodsController extends Controller
                         });
                 break;
             case 'all':
-                return Good::all()->forPage($aRequest['page'], $aRequest['count'])
+                return Good::all()->shuffle()->forPage($aRequest['page'], $aRequest['count'])
                     ->values()->each(
                         function ($good) {
                             if (count($good->media) > 0) {

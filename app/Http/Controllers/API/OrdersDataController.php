@@ -17,14 +17,14 @@ class OrdersDataController extends Controller
         $data = $request->json()->all();
         $user = \auth('api')->user();
         $data['status_id'] = is_array($data['status_id']) ? $data['status_id'] : [$data['status_id']];
-        $orders = Order::whereIn('status_id', $data['status_id'])->where(
-            [
-                'user_id' => $user->id,
-            ])
+        $orders = Order::withTrashed()
+            ->where('user_id', '=', $user->id)
             ->with(['goods' => function ($good) {
                 $good->with('category');
-            },'status'])
-            ->get();
+            }, 'status'])
+            ->get()
+            ->whereIn('status_id', $data['status_id']);
+
         $data['mode'] = $data['mode'] ?? 'new';
         switch ($data['mode']) {
             case "old":
@@ -42,7 +42,9 @@ class OrdersDataController extends Controller
     {
         $data = $request->json()->all();
         $good_owner_id = $data['user_id'];
-        $orders = Order::with('goods')->whereHas('goods',
+        $orders = Order::with(['goods' => function ($good) {
+            $good->with('category');
+        }, 'status'])->whereHas('goods',
             function ($good) use ($good_owner_id) {
                 $good->where('user_id', '=', $good_owner_id);
             })->get()->toArray();
@@ -91,8 +93,8 @@ class OrdersDataController extends Controller
             return self::bad_request(['Не удалось обновить статус заказа']);
         }
         $goods = $order->goods;
-        $order->status_id = $data['status_id'];
-
+        $order->status_id = $status_id;
+        $order->save();
         if ($status_id == Order::STATUS_PAID) {
             foreach ($goods as $good) {
                 if (!$good->is_unlimited) {

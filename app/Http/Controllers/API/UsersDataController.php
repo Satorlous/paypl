@@ -71,7 +71,7 @@ class UsersDataController extends Controller
     {
         $user = \auth('api')->user();
 
-        $orders = Order::where('status_id', Order::STATUS_FINISHED)->with('goods')->whereHas('goods',
+        $orders = Order::whereIn('status_id',[Order::STATUS_FINISHED, Order::STATUS_PAID])->with('goods')->whereHas('goods',
             function ($good) use ($user) {
                 $good->where('user_id', '=', $user->id);
             })->orderBy('updated_at')->get()->toArray();
